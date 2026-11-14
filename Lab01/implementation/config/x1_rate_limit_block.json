@@ -1,0 +1,23 @@
+{
+  "name": "x1_rate_limit_block",
+  "description": "X1 (bổ sung) - giới hạn gửi chặt (12 tin / 10 ms) làm tin phải xếp hàng; v9 gửi dồn 600 tin vào v0 nên bị v0 chặn tạm thời rồi mở lại.",
+  "genesis": "genesis.json",
+  "seed": 808,
+  "target_height": 10,
+  "max_time": 60000,
+  "network": {
+    "gst": 0,
+    "delta": 80,
+    "outbound": {"window_ms": 10, "max_msgs": 12},
+    "inbound": {"window_ms": 100, "max_msgs_per_peer": 300, "block_ms": 300}
+  },
+  "byzantine": {"v9": {"modes": ["flood"], "target": "v0", "burst": 600, "every": 3}},
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "generated": {"count": 16, "start": 5, "interval": 60}
+  },
+  "expect": {
+    "progress": true,
+    "min_counts": {"delay:rate_limit": 20, "block": 1, "unblock": 1, "drop:peer_blocked": 100, "byz_flood": 1}
+  }
+}

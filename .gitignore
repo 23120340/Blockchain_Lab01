@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Bản đóng gói (tạo lại bằng Lab01/make_submission.py)
+Lab01/submission/

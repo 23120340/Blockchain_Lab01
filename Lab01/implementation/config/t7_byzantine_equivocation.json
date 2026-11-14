@@ -1,0 +1,23 @@
+{
+  "name": "t7_byzantine_equivocation",
+  "description": "T7 - đúng f = 3 validator Byzantine (v1, v4, v7) thông đồng equivocate: ký phiếu xung đột cho hai nhóm node, và khi làm proposer thì gửi hai block khác nhau. Không được finalize xung đột.",
+  "genesis": "genesis.json",
+  "seed": 707,
+  "target_height": 12,
+  "max_time": 60000,
+  "network": {"gst": 0, "delta": 50},
+  "byzantine": {
+    "v1": {"modes": ["equivocate"]},
+    "v4": {"modes": ["equivocate"]},
+    "v7": {"modes": ["equivocate"]}
+  },
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "generated": {"count": 24, "start": 5, "interval": 60}
+  },
+  "expect": {
+    "progress": true,
+    "nonces": {"alice": 6, "bob": 6, "carol": 6, "dave": 6},
+    "min_counts": {"byz_equivocate_proposal": 3, "byz_equivocate_vote": 30, "equivocation": 30}
+  }
+}

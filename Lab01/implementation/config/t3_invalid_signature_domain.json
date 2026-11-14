@@ -1,0 +1,37 @@
+{
+  "name": "t3_invalid_signature_domain",
+  "description": "T3 - chữ ký sai, sai domain, sai chain, sai người ký (từ client và từ validator Byzantine v3): thông điệp bị từ chối và log lý do.",
+  "genesis": "genesis.json",
+  "seed": 303,
+  "target_height": 10,
+  "max_time": 30000,
+  "network": {"gst": 0, "delta": 50},
+  "byzantine": {"v3": {"modes": ["forge"]}},
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "txs": [
+      {"t": 5, "to": ["v0", "v5"], "sender": "alice", "nonce": 0, "key": "alice/message", "value": "hello"},
+      {"t": 10, "to": ["v1", "v6"], "sender": "bob", "nonce": 0, "key": "bob/message", "value": "evil", "corrupt": "bad_sig"},
+      {"t": 15, "to": ["v2", "v7"], "sender": "carol", "nonce": 0, "key": "carol/message", "value": "evil", "corrupt": "wrong_domain"},
+      {"t": 20, "to": ["v4", "v8"], "sender": "dave", "nonce": 0, "key": "dave/message", "value": "evil", "corrupt": "wrong_chain"},
+      {"t": 25, "to": ["v5", "v9"], "sender": "carol", "nonce": 0, "key": "carol/message", "value": "evil", "corrupt": "cross_domain"},
+      {"t": 30, "to": ["v0", "v6"], "sender": "alice", "nonce": 1, "key": "bob/message", "value": "stolen"},
+      {"t": 35, "to": ["v1", "v7"], "sender": "bob", "signer": "mallory", "nonce": 0, "key": "bob/message", "value": "impersonated"},
+      {"t": 40, "to": ["v2", "v8"], "sender": "dave", "nonce": 0, "key": "dave/message", "value": "original", "corrupt": "tampered"}
+    ]
+  },
+  "expect": {
+    "progress": true,
+    "state": {"alice/message": "hello", "bob/message": null, "carol/message": null, "dave/message": null},
+    "nonces": {"alice": 1, "bob": 0, "carol": 0, "dave": 0},
+    "min_counts": {
+      "reject:bad_signature": 10,
+      "reject:wrong_domain": 10,
+      "reject:wrong_chain": 10,
+      "reject:unknown_validator": 9,
+      "reject:not_owner": 2,
+      "reject:body_without_accepted_header": 9,
+      "byz_forge": 5
+    }
+  }
+}

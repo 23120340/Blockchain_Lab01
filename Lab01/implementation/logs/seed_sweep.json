@@ -1,0 +1,602 @@
+[
+  {
+    "end_time": 4138,
+    "equivocation": 0,
+    "finalize_pre_gst": 19,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 1
+  },
+  {
+    "end_time": 4011,
+    "equivocation": 0,
+    "finalize_pre_gst": 17,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 2
+  },
+  {
+    "end_time": 3811,
+    "equivocation": 0,
+    "finalize_pre_gst": 27,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 3
+  },
+  {
+    "end_time": 4064,
+    "equivocation": 0,
+    "finalize_pre_gst": 35,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 4
+  },
+  {
+    "end_time": 3884,
+    "equivocation": 0,
+    "finalize_pre_gst": 20,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 5
+  },
+  {
+    "end_time": 4281,
+    "equivocation": 0,
+    "finalize_pre_gst": 25,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 6
+  },
+  {
+    "end_time": 4214,
+    "equivocation": 0,
+    "finalize_pre_gst": 34,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 7
+  },
+  {
+    "end_time": 3925,
+    "equivocation": 0,
+    "finalize_pre_gst": 31,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 8
+  },
+  {
+    "end_time": 3886,
+    "equivocation": 0,
+    "finalize_pre_gst": 19,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 9
+  },
+  {
+    "end_time": 4170,
+    "equivocation": 0,
+    "finalize_pre_gst": 33,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 10
+  },
+  {
+    "end_time": 3972,
+    "equivocation": 0,
+    "finalize_pre_gst": 17,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 11
+  },
+  {
+    "end_time": 4244,
+    "equivocation": 0,
+    "finalize_pre_gst": 17,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 12
+  },
+  {
+    "end_time": 3981,
+    "equivocation": 0,
+    "finalize_pre_gst": 25,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 13
+  },
+  {
+    "end_time": 3878,
+    "equivocation": 0,
+    "finalize_pre_gst": 34,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 14
+  },
+  {
+    "end_time": 4333,
+    "equivocation": 0,
+    "finalize_pre_gst": 19,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 15
+  },
+  {
+    "end_time": 3902,
+    "equivocation": 0,
+    "finalize_pre_gst": 27,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 16
+  },
+  {
+    "end_time": 3957,
+    "equivocation": 0,
+    "finalize_pre_gst": 19,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 17
+  },
+  {
+    "end_time": 3991,
+    "equivocation": 0,
+    "finalize_pre_gst": 27,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 18
+  },
+  {
+    "end_time": 4204,
+    "equivocation": 0,
+    "finalize_pre_gst": 51,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 19
+  },
+  {
+    "end_time": 4185,
+    "equivocation": 0,
+    "finalize_pre_gst": 19,
+    "min_height": 10,
+    "progress": true,
+    "safety": true,
+    "scenario": "t5_drop_delay_before_gst",
+    "seed": 20
+  },
+  {
+    "end_time": 2134,
+    "equivocation": 294,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 1
+  },
+  {
+    "end_time": 2183,
+    "equivocation": 266,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 2
+  },
+  {
+    "end_time": 2512,
+    "equivocation": 259,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 3
+  },
+  {
+    "end_time": 2595,
+    "equivocation": 271,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 4
+  },
+  {
+    "end_time": 2458,
+    "equivocation": 276,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 5
+  },
+  {
+    "end_time": 2349,
+    "equivocation": 277,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 6
+  },
+  {
+    "end_time": 2382,
+    "equivocation": 280,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 7
+  },
+  {
+    "end_time": 2308,
+    "equivocation": 271,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 8
+  },
+  {
+    "end_time": 2395,
+    "equivocation": 282,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 9
+  },
+  {
+    "end_time": 2403,
+    "equivocation": 258,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 10
+  },
+  {
+    "end_time": 2437,
+    "equivocation": 244,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 11
+  },
+  {
+    "end_time": 2852,
+    "equivocation": 311,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 12
+  },
+  {
+    "end_time": 2524,
+    "equivocation": 320,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 13
+  },
+  {
+    "end_time": 2521,
+    "equivocation": 360,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 14
+  },
+  {
+    "end_time": 2345,
+    "equivocation": 293,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 15
+  },
+  {
+    "end_time": 2705,
+    "equivocation": 291,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 16
+  },
+  {
+    "end_time": 2765,
+    "equivocation": 318,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 17
+  },
+  {
+    "end_time": 2521,
+    "equivocation": 262,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 18
+  },
+  {
+    "end_time": 2794,
+    "equivocation": 298,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 19
+  },
+  {
+    "end_time": 2492,
+    "equivocation": 265,
+    "finalize_pre_gst": 0,
+    "min_height": 12,
+    "progress": true,
+    "safety": true,
+    "scenario": "t7_byzantine_equivocation",
+    "seed": 20
+  },
+  {
+    "end_time": 2231,
+    "equivocation": 78,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 1
+  },
+  {
+    "end_time": 2321,
+    "equivocation": 78,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 2
+  },
+  {
+    "end_time": 2207,
+    "equivocation": 78,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 3
+  },
+  {
+    "end_time": 2249,
+    "equivocation": 80,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 4
+  },
+  {
+    "end_time": 2250,
+    "equivocation": 80,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 5
+  },
+  {
+    "end_time": 2254,
+    "equivocation": 78,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 6
+  },
+  {
+    "end_time": 2216,
+    "equivocation": 77,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 7
+  },
+  {
+    "end_time": 2308,
+    "equivocation": 78,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 8
+  },
+  {
+    "end_time": 2272,
+    "equivocation": 80,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 9
+  },
+  {
+    "end_time": 2303,
+    "equivocation": 79,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 10
+  },
+  {
+    "end_time": 2307,
+    "equivocation": 79,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 11
+  },
+  {
+    "end_time": 2277,
+    "equivocation": 79,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 12
+  },
+  {
+    "end_time": 2224,
+    "equivocation": 79,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 13
+  },
+  {
+    "end_time": 2351,
+    "equivocation": 78,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 14
+  },
+  {
+    "end_time": 2245,
+    "equivocation": 80,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 15
+  },
+  {
+    "end_time": 2215,
+    "equivocation": 77,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 16
+  },
+  {
+    "end_time": 2202,
+    "equivocation": 81,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 17
+  },
+  {
+    "end_time": 2242,
+    "equivocation": 77,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 18
+  },
+  {
+    "end_time": 2278,
+    "equivocation": 80,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 19
+  },
+  {
+    "end_time": 2228,
+    "equivocation": 76,
+    "finalize_pre_gst": 0,
+    "min_height": 9,
+    "progress": true,
+    "safety": true,
+    "scenario": "x3_withheld_commit",
+    "seed": 20
+  }
+]

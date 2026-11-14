@@ -1,0 +1,27 @@
+{
+  "name": "t1_normal",
+  "description": "T1 - chạy bình thường, không lỗi: mọi node đúng finalize cùng chain và state hash.",
+  "genesis": "genesis.json",
+  "seed": 101,
+  "target_height": 12,
+  "max_time": 30000,
+  "network": {
+    "gst": 0,
+    "delta": 50,
+    "post_gst": {"delay_min": 5, "delay_max": 40, "dup_permille": 0}
+  },
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "txs": [
+      {"t": 5, "to": ["v0", "v5"], "sender": "alice", "nonce": 0, "key": "alice/message", "value": "hello"},
+      {"t": 60, "to": ["v1", "v6"], "sender": "bob", "nonce": 0, "key": "bob/message", "value": "hi"}
+    ],
+    "generated": {"count": 24, "start": 100, "interval": 40, "first_nonce": {"alice": 1, "bob": 1}}
+  },
+  "expect": {
+    "progress": true,
+    "state": {"alice/message": "hello", "bob/message": "hi"},
+    "nonces": {"alice": 7, "bob": 7, "carol": 6, "dave": 6},
+    "max_counts": {"drop": 0, "timeout": 0, "reject": 0, "equivocation": 0}
+  }
+}

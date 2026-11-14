@@ -1,0 +1,26 @@
+{
+  "name": "t5_drop_delay_before_gst",
+  "description": "T5 - trước GST (3000 ms): mất 5% tin, trễ tới 80 ms, nhân đôi 5%, và v8-v9 bị cô lập trong 2500 ms đầu (nhóm 8 node còn lại vẫn đủ quorum nên có finalize trước GST). Safety luôn giữ; kiểm tra bổ sung: node bị cô lập bắt kịp và chain tới target sau GST.",
+  "genesis": "genesis.json",
+  "seed": 505,
+  "target_height": 10,
+  "max_time": 60000,
+  "network": {
+    "gst": 3000,
+    "delta": 50,
+    "pre_gst": {"delay_min": 5, "delay_max": 80, "drop_permille": 50, "dup_permille": 50},
+    "post_gst": {"delay_min": 5, "delay_max": 40, "dup_permille": 0},
+    "partitions": [
+      {"from": 0, "to": 2500, "groups": [["v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7"], ["v8", "v9"]]}
+    ]
+  },
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "generated": {"count": 24, "start": 5, "interval": 150}
+  },
+  "expect": {
+    "progress": true,
+    "min_counts": {"drop:partition": 50, "drop:random_loss": 50, "delay:slow_link": 50, "timeout": 5,
+                   "finalize_pre_gst": 5, "commit_cert": 1, "round_start_after_round0": 5}
+  }
+}

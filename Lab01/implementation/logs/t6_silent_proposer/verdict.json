@@ -1,0 +1,138 @@
+{
+  "checks": [
+    {
+      "detail": "12 height đã finalize; xung đột: []",
+      "name": "no_conflicting_finalization",
+      "ok": true
+    },
+    {
+      "detail": "lịch sử không liên tục/đổi parent: []",
+      "name": "finalized_history_immutable",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "commit_has_quorum_of_distinct_validators",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "tx_applied_at_most_once",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "one_vote_per_height_round_phase",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "lock_rule_respected",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "body_only_after_header_accepted",
+      "ok": true
+    },
+    {
+      "detail": "min height=12, target=12, t=2680 ms",
+      "name": "progress_to_target_height",
+      "ok": true
+    },
+    {
+      "detail": "height chung=12",
+      "name": "same_chain_and_state_at_common_height",
+      "ok": true
+    },
+    {
+      "detail": "max latency=40 ms, Delta=50 ms, drop sau GST giữa node đúng=0",
+      "name": "post_gst_delivery_within_delta",
+      "ok": true
+    },
+    {
+      "detail": "2",
+      "name": "count[crash]>=2",
+      "ok": true
+    },
+    {
+      "detail": "25",
+      "name": "count[timeout:precommit]>=14",
+      "ok": true
+    },
+    {
+      "detail": "25",
+      "name": "count[timeout:propose]>=14",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[alice]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[bob]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[carol]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[dave]",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "block_valid": 86,
+    "crash": 2,
+    "deliver": 2896,
+    "deliver:BODY": 86,
+    "deliver:BODY_REQUEST": 121,
+    "deliver:PROPOSAL": 119,
+    "deliver:TX": 360,
+    "deliver:VOTE": 2210,
+    "fetch": 26,
+    "fetch:BODY_REQUEST": 26,
+    "finalize": 97,
+    "finalize_pre_gst": 0,
+    "header_accept": 97,
+    "ignore": 256,
+    "ignore:TX": 136,
+    "ignore:VOTE": 120,
+    "ignore:duplicate_tx": 136,
+    "ignore:stale_height": 120,
+    "lock": 98,
+    "propose": 14,
+    "round_start": 132,
+    "round_start_after_round0": 25,
+    "send": 2918,
+    "send:BODY": 86,
+    "send:BODY_REQUEST": 123,
+    "send:PROPOSAL": 126,
+    "send:TX": 360,
+    "send:VOTE": 2223,
+    "timeout": 50,
+    "timeout:precommit": 25,
+    "timeout:propose": 25,
+    "tx_accept": 202,
+    "tx_submit": 40,
+    "vote_sign": 247
+  },
+  "final_state_hash": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
+  "finalized_heights": {
+    "v0": 12,
+    "v2": 12,
+    "v3": 12,
+    "v4": 12,
+    "v6": 12,
+    "v7": 12,
+    "v8": 12,
+    "v9": 12
+  },
+  "pass": true,
+  "scenario": "t6_silent_proposer"
+}

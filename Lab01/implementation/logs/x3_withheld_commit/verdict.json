@@ -1,0 +1,136 @@
+{
+  "checks": [
+    {
+      "detail": "9 height đã finalize; xung đột: []",
+      "name": "no_conflicting_finalization",
+      "ok": true
+    },
+    {
+      "detail": "lịch sử không liên tục/đổi parent: []",
+      "name": "finalized_history_immutable",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "commit_has_quorum_of_distinct_validators",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "tx_applied_at_most_once",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "one_vote_per_height_round_phase",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "lock_rule_respected",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "body_only_after_header_accepted",
+      "ok": true
+    },
+    {
+      "detail": "min height=9, target=9, t=2223 ms",
+      "name": "progress_to_target_height",
+      "ok": true
+    },
+    {
+      "detail": "height chung=9",
+      "name": "same_chain_and_state_at_common_height",
+      "ok": true
+    },
+    {
+      "detail": "max latency=40 ms, Delta=50 ms, drop sau GST giữa node đúng=0",
+      "name": "post_gst_delivery_within_delta",
+      "ok": true
+    },
+    {
+      "detail": "3",
+      "name": "count[byz_equivocate_proposal]>=1",
+      "ok": true
+    },
+    {
+      "detail": "9",
+      "name": "count[byz_withhold_commit]>=3",
+      "ok": true
+    },
+    {
+      "detail": "18",
+      "name": "count[commit_cert]>=6",
+      "ok": true
+    },
+    {
+      "detail": "27",
+      "name": "count[round_start_after_round0]>=6",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "block_valid": 106,
+    "byz_equivocate_proposal": 3,
+    "byz_equivocate_vote": 9,
+    "byz_withhold_commit": 9,
+    "commit_cert": 18,
+    "deliver": 2767,
+    "deliver:BODY": 106,
+    "deliver:BODY_REQUEST": 106,
+    "deliver:COMMIT": 18,
+    "deliver:PROPOSAL": 108,
+    "deliver:SYNC_REQUEST": 36,
+    "deliver:TX": 288,
+    "deliver:VOTE": 2105,
+    "equivocation": 79,
+    "equivocation:VOTE": 79,
+    "finalize": 90,
+    "finalize_pre_gst": 0,
+    "header_accept": 106,
+    "ignore": 514,
+    "ignore:PROPOSAL": 3,
+    "ignore:SYNC_REQUEST": 18,
+    "ignore:TX": 160,
+    "ignore:VOTE": 333,
+    "ignore:duplicate_tx": 160,
+    "ignore:duplicate_vote": 17,
+    "ignore:not_finalized": 18,
+    "ignore:stale_height": 319,
+    "lock": 93,
+    "propose": 10,
+    "resend": 2,
+    "round_start": 127,
+    "round_start_after_round0": 27,
+    "send": 2804,
+    "send:BODY": 106,
+    "send:BODY_REQUEST": 106,
+    "send:COMMIT": 18,
+    "send:PROPOSAL": 117,
+    "send:SYNC_REQUEST": 36,
+    "send:TX": 288,
+    "send:VOTE": 2133,
+    "sync_request": 36,
+    "timeout": 50,
+    "timeout:precommit": 27,
+    "timeout:prevote": 20,
+    "timeout:propose": 3,
+    "tx_accept": 160,
+    "tx_submit": 32,
+    "vote_sign": 228
+  },
+  "final_state_hash": "a890275cc335b326d23a1ec2bc71954d1c624fc734db24ccca72b37dde5f6359",
+  "finalized_heights": {
+    "v0": 9,
+    "v2": 9,
+    "v3": 9,
+    "v5": 9,
+    "v6": 9,
+    "v8": 9,
+    "v9": 9
+  },
+  "pass": true,
+  "scenario": "x3_withheld_commit"
+}

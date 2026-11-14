@@ -1,0 +1,115 @@
+{
+  "pass": true,
+  "runs": [
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1248114,
+      "log_sha256_run1": "87f50a2addc3999f6acf60596ab75d13bcaea8de52f063b29e150f2341d9c665",
+      "log_sha256_run2": "87f50a2addc3999f6acf60596ab75d13bcaea8de52f063b29e150f2341d9c665",
+      "scenario": "t1_normal",
+      "state_hash_run1": "2451cf1761f390d3d10a60f164122c3fcb6933cc1abf6e26470e0814eac02ae6",
+      "state_hash_run2": "2451cf1761f390d3d10a60f164122c3fcb6933cc1abf6e26470e0814eac02ae6"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1807888,
+      "log_sha256_run1": "4e0e6f89c047a50341b73b7fc4cb37efc2238eab736258c6248659dc20cd27be",
+      "log_sha256_run2": "4e0e6f89c047a50341b73b7fc4cb37efc2238eab736258c6248659dc20cd27be",
+      "scenario": "t2_duplicate_reorder",
+      "state_hash_run1": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
+      "state_hash_run2": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1137090,
+      "log_sha256_run1": "c4a8b3ce93eff31b428c94cf5acd191b40ead1784c5eeed1f8a448f13abbb99d",
+      "log_sha256_run2": "c4a8b3ce93eff31b428c94cf5acd191b40ead1784c5eeed1f8a448f13abbb99d",
+      "scenario": "t3_invalid_signature_domain",
+      "state_hash_run1": "436bc271db28bbf2ffa0b207234f922710246f1da215c0a197bbe1b485b34b1b",
+      "state_hash_run2": "436bc271db28bbf2ffa0b207234f922710246f1da215c0a197bbe1b485b34b1b"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1893323,
+      "log_sha256_run1": "58e208df765e1ff40c37a29691e364214d55692cdf166cb8007c029c3bcbb623",
+      "log_sha256_run2": "58e208df765e1ff40c37a29691e364214d55692cdf166cb8007c029c3bcbb623",
+      "scenario": "t4_replay_transaction",
+      "state_hash_run1": "1f1805a8c0403be6e769eb8bf5264810e39bd88655520631e932e7665d61bfe2",
+      "state_hash_run2": "1f1805a8c0403be6e769eb8bf5264810e39bd88655520631e932e7665d61bfe2"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1379790,
+      "log_sha256_run1": "87634ee99794294ae7e9dde1ccf83f8e58686b3354e5925f38df5987c9bfd385",
+      "log_sha256_run2": "87634ee99794294ae7e9dde1ccf83f8e58686b3354e5925f38df5987c9bfd385",
+      "scenario": "t5_drop_delay_before_gst",
+      "state_hash_run1": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
+      "state_hash_run2": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1118893,
+      "log_sha256_run1": "28f55cd9a6c4359b0e1c8f6e53fe2edf674bfc1bcb635d807d3ab05a025090cc",
+      "log_sha256_run2": "28f55cd9a6c4359b0e1c8f6e53fe2edf674bfc1bcb635d807d3ab05a025090cc",
+      "scenario": "t6_silent_proposer",
+      "state_hash_run1": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
+      "state_hash_run2": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1587922,
+      "log_sha256_run1": "8f6ee63056b2041437ba9b26f1436828ba5523ae77f3617a1534a71fbb63dfa0",
+      "log_sha256_run2": "8f6ee63056b2041437ba9b26f1436828ba5523ae77f3617a1534a71fbb63dfa0",
+      "scenario": "t7_byzantine_equivocation",
+      "state_hash_run1": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
+      "state_hash_run2": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1586293,
+      "log_sha256_run1": "ecda69db3e2430810a78b689d34bc2423392d5490d3b0a0e332a926c338a7b8a",
+      "log_sha256_run2": "ecda69db3e2430810a78b689d34bc2423392d5490d3b0a0e332a926c338a7b8a",
+      "scenario": "x1_rate_limit_block",
+      "state_hash_run1": "a890275cc335b326d23a1ec2bc71954d1c624fc734db24ccca72b37dde5f6359",
+      "state_hash_run2": "a890275cc335b326d23a1ec2bc71954d1c624fc734db24ccca72b37dde5f6359"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1350959,
+      "log_sha256_run1": "532dde4f7f2c2c8fd13a33586424e59ac238d281852cb7e8534f5c154c8764e2",
+      "log_sha256_run2": "532dde4f7f2c2c8fd13a33586424e59ac238d281852cb7e8534f5c154c8764e2",
+      "scenario": "x2_invalid_block_proposer",
+      "state_hash_run1": "a890275cc335b326d23a1ec2bc71954d1c624fc734db24ccca72b37dde5f6359",
+      "state_hash_run2": "a890275cc335b326d23a1ec2bc71954d1c624fc734db24ccca72b37dde5f6359"
+    },
+    {
+      "identical_log_bytes": true,
+      "identical_state_hash": true,
+      "identical_summary_bytes": true,
+      "log_bytes": 1141830,
+      "log_sha256_run1": "659f8a67906875e1758cfb0cd6757afd3858197a56e58d344c4a5f7aa2cfb7a6",
+      "log_sha256_run2": "659f8a67906875e1758cfb0cd6757afd3858197a56e58d344c4a5f7aa2cfb7a6",
+      "scenario": "x3_withheld_commit",
+      "state_hash_run1": "a890275cc335b326d23a1ec2bc71954d1c624fc734db24ccca72b37dde5f6359",
+      "state_hash_run2": "a890275cc335b326d23a1ec2bc71954d1c624fc734db24ccca72b37dde5f6359"
+    }
+  ]
+}

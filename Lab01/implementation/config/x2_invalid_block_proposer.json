@@ -1,0 +1,27 @@
+{
+  "name": "x2_invalid_block_proposer",
+  "description": "X2 (bổ sung) - proposer Byzantine đề xuất block sai: v2 ghi state hash sai, v6 nhét transaction ghi vào khóa của người khác. Node đúng prevote NIL, state đã commit không đổi, round sau chain đi tiếp.",
+  "genesis": "genesis.json",
+  "seed": 909,
+  "target_height": 12,
+  "max_time": 60000,
+  "network": {"gst": 0, "delta": 50},
+  "byzantine": {
+    "v2": {"modes": ["invalid_block"], "variant": "bad_state_hash"},
+    "v6": {"modes": ["invalid_block"], "variant": "foreign_key"}
+  },
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "generated": {"count": 16, "start": 5, "interval": 60}
+  },
+  "expect": {
+    "progress": true,
+    "state": {"alice/message": null},
+    "nonces": {"alice": 4, "bob": 4, "carol": 4, "dave": 4, "v6": 0},
+    "min_counts": {
+      "block_invalid:state_hash_mismatch": 8,
+      "block_invalid:invalid_tx:not_owner": 8,
+      "byz_invalid_block": 3
+    }
+  }
+}

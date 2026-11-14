@@ -1,0 +1,36 @@
+{
+  "name": "t4_replay_transaction",
+  "description": "T4 - transaction bị gửi lặp và phát lại (client gửi lại, v7 phát lại qua mạng, proposer v2 nhét transaction cũ vào block): mỗi transaction áp dụng tối đa một lần.",
+  "genesis": "genesis.json",
+  "seed": 404,
+  "target_height": 14,
+  "max_time": 30000,
+  "network": {"gst": 0, "delta": 50},
+  "byzantine": {
+    "v2": {"modes": ["invalid_block"], "variant": "replay_tx"},
+    "v7": {"modes": ["replay"]}
+  },
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "txs": [
+      {"t": 5, "to": ["v0", "v3", "v5", "v8"], "sender": "alice", "nonce": 0, "key": "alice/message", "value": "a"},
+      {"t": 6, "to": ["v0", "v3"], "sender": "alice", "nonce": 0, "key": "alice/message", "value": "a"},
+      {"t": 300, "to": ["v0", "v5"], "sender": "alice", "nonce": 1, "key": "alice/message", "value": "b"},
+      {"t": 700, "to": ["v1", "v4", "v6", "v9"], "sender": "alice", "nonce": 0, "key": "alice/message", "value": "a"},
+      {"t": 1000, "to": ["v0", "v3", "v8"], "sender": "alice", "nonce": 0, "key": "alice/message", "value": "a"},
+      {"t": 1100, "to": ["v5"], "sender": "alice", "nonce": 1, "key": "alice/message", "value": "b"}
+    ]
+  },
+  "expect": {
+    "progress": true,
+    "state": {"alice/message": "b"},
+    "nonces": {"alice": 2},
+    "min_counts": {
+      "reject:stale_nonce": 5,
+      "ignore:duplicate_tx": 2,
+      "block_invalid:invalid_tx:replayed_nonce": 5,
+      "byz_replay": 3,
+      "byz_invalid_block": 1
+    }
+  }
+}

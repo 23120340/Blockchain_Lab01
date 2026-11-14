@@ -1,0 +1,22 @@
+{
+  "name": "t6_silent_proposer",
+  "description": "T6 - v1 (proposer của height 1) im lặng từ đầu, v5 crash giữa chừng lúc 600 ms: timeout kích hoạt đổi round và chain tiếp tục.",
+  "genesis": "genesis.json",
+  "seed": 606,
+  "target_height": 12,
+  "max_time": 60000,
+  "network": {"gst": 0, "delta": 50},
+  "byzantine": {
+    "v1": {"modes": ["silent"], "crash_at": 0},
+    "v5": {"modes": ["silent"], "crash_at": 600}
+  },
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "generated": {"count": 24, "start": 5, "interval": 60}
+  },
+  "expect": {
+    "progress": true,
+    "nonces": {"alice": 6, "bob": 6, "carol": 6, "dave": 6},
+    "min_counts": {"crash": 2, "timeout:propose": 14, "timeout:precommit": 14}
+  }
+}

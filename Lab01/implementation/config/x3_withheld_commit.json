@@ -1,0 +1,23 @@
+{
+  "name": "x3_withheld_commit",
+  "description": "X3 (bổ sung) - đòn giấu commit nhắm vào luật lock: 3 validator Byzantine cho riêng v0 đủ PRECOMMIT để v0 finalize block A một mình, rồi ở round sau cùng bỏ phiếu cho block khác. Các node đúng đã lock A phải prevote NIL, nếu không sẽ finalize xung đột với v0.",
+  "genesis": "genesis.json",
+  "seed": 1010,
+  "target_height": 9,
+  "max_time": 60000,
+  "network": {"gst": 0, "delta": 50},
+  "byzantine": {
+    "v1": {"modes": ["equivocate"], "favor": "v0", "group_b": ["v2", "v3", "v5"]},
+    "v4": {"modes": ["equivocate"], "favor": "v0", "group_b": ["v2", "v3", "v5"]},
+    "v7": {"modes": ["equivocate"], "favor": "v0", "group_b": ["v2", "v3", "v5"]}
+  },
+  "workload": {
+    "accounts": ["alice", "bob", "carol", "dave"],
+    "generated": {"count": 16, "start": 5, "interval": 60}
+  },
+  "expect": {
+    "progress": true,
+    "min_counts": {"byz_withhold_commit": 3, "byz_equivocate_proposal": 1, "commit_cert": 6,
+                   "round_start_after_round0": 6}
+  }
+}

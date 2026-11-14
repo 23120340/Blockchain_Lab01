@@ -1,0 +1,148 @@
+{
+  "checks": [
+    {
+      "detail": "12 height đã finalize; xung đột: []",
+      "name": "no_conflicting_finalization",
+      "ok": true
+    },
+    {
+      "detail": "lịch sử không liên tục/đổi parent: []",
+      "name": "finalized_history_immutable",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "commit_has_quorum_of_distinct_validators",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "tx_applied_at_most_once",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "one_vote_per_height_round_phase",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "lock_rule_respected",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "body_only_after_header_accepted",
+      "ok": true
+    },
+    {
+      "detail": "min height=12, target=12, t=1413 ms",
+      "name": "progress_to_target_height",
+      "ok": true
+    },
+    {
+      "detail": "height chung=12",
+      "name": "same_chain_and_state_at_common_height",
+      "ok": true
+    },
+    {
+      "detail": "max latency=45 ms, Delta=50 ms, drop sau GST giữa node đúng=0",
+      "name": "post_gst_delivery_within_delta",
+      "ok": true
+    },
+    {
+      "detail": "887",
+      "name": "count[duplicate]>=100",
+      "ok": true
+    },
+    {
+      "detail": "355",
+      "name": "count[ignore:duplicate_vote]>=50",
+      "ok": true
+    },
+    {
+      "detail": "0",
+      "name": "count[equivocation]<=0",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[alice]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[bob]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[carol]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[dave]",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "block_valid": 108,
+    "deliver": 3809,
+    "deliver:BODY": 181,
+    "deliver:BODY_REQUEST": 137,
+    "deliver:PROPOSAL": 139,
+    "deliver:TX": 580,
+    "deliver:VOTE": 2772,
+    "duplicate": 887,
+    "duplicate:BODY": 44,
+    "duplicate:BODY_REQUEST": 29,
+    "duplicate:PROPOSAL": 33,
+    "duplicate:TX": 148,
+    "duplicate:VOTE": 633,
+    "finalize": 120,
+    "finalize_pre_gst": 0,
+    "header_accept": 108,
+    "ignore": 1590,
+    "ignore:BODY": 71,
+    "ignore:PROPOSAL": 31,
+    "ignore:TX": 388,
+    "ignore:VOTE": 1100,
+    "ignore:duplicate_body": 71,
+    "ignore:duplicate_proposal": 31,
+    "ignore:duplicate_tx": 388,
+    "ignore:duplicate_vote": 355,
+    "ignore:stale_height": 745,
+    "lock": 120,
+    "propose": 13,
+    "reject": 2,
+    "reject:BODY": 2,
+    "reject:body_without_accepted_header": 2,
+    "round_start": 130,
+    "round_start_after_round0": 0,
+    "send": 3850,
+    "send:BODY": 181,
+    "send:BODY_REQUEST": 137,
+    "send:PROPOSAL": 150,
+    "send:TX": 580,
+    "send:VOTE": 2802,
+    "tx_accept": 240,
+    "tx_submit": 48,
+    "vote_sign": 241
+  },
+  "final_state_hash": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
+  "finalized_heights": {
+    "v0": 12,
+    "v1": 12,
+    "v2": 12,
+    "v3": 12,
+    "v4": 12,
+    "v5": 12,
+    "v6": 12,
+    "v7": 12,
+    "v8": 12,
+    "v9": 12
+  },
+  "pass": true,
+  "scenario": "t2_duplicate_reorder"
+}

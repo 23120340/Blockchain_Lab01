@@ -1,0 +1,186 @@
+{
+  "checks": [
+    {
+      "detail": "10 height đã finalize; xung đột: []",
+      "name": "no_conflicting_finalization",
+      "ok": true
+    },
+    {
+      "detail": "lịch sử không liên tục/đổi parent: []",
+      "name": "finalized_history_immutable",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "commit_has_quorum_of_distinct_validators",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "tx_applied_at_most_once",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "one_vote_per_height_round_phase",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "lock_rule_respected",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "body_only_after_header_accepted",
+      "ok": true
+    },
+    {
+      "detail": "min height=10, target=10, t=1239 ms",
+      "name": "progress_to_target_height",
+      "ok": true
+    },
+    {
+      "detail": "height chung=10",
+      "name": "same_chain_and_state_at_common_height",
+      "ok": true
+    },
+    {
+      "detail": "max latency=40 ms, Delta=50 ms, drop sau GST giữa node đúng=0",
+      "name": "post_gst_delivery_within_delta",
+      "ok": true
+    },
+    {
+      "detail": "11",
+      "name": "count[byz_forge]>=5",
+      "ok": true
+    },
+    {
+      "detail": "296",
+      "name": "count[reject:bad_signature]>=10",
+      "ok": true
+    },
+    {
+      "detail": "92",
+      "name": "count[reject:body_without_accepted_header]>=9",
+      "ok": true
+    },
+    {
+      "detail": "2",
+      "name": "count[reject:not_owner]>=2",
+      "ok": true
+    },
+    {
+      "detail": "93",
+      "name": "count[reject:unknown_validator]>=9",
+      "ok": true
+    },
+    {
+      "detail": "96",
+      "name": "count[reject:wrong_chain]>=10",
+      "ok": true
+    },
+    {
+      "detail": "95",
+      "name": "count[reject:wrong_domain]>=10",
+      "ok": true
+    },
+    {
+      "detail": "thực tế='hello', mong đợi='hello'",
+      "name": "state[alice/message]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=None, mong đợi=None",
+      "name": "state[bob/message]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=None, mong đợi=None",
+      "name": "state[carol/message]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=None, mong đợi=None",
+      "name": "state[dave/message]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=1, mong đợi=1",
+      "name": "nonce[alice]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=0, mong đợi=0",
+      "name": "nonce[bob]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=0, mong đợi=0",
+      "name": "nonce[carol]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=0, mong đợi=0",
+      "name": "nonce[dave]",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "block_valid": 90,
+    "byz_forge": 11,
+    "deliver": 2823,
+    "deliver:BODY": 182,
+    "deliver:BODY_REQUEST": 90,
+    "deliver:PROPOSAL": 184,
+    "deliver:TX": 18,
+    "deliver:VOTE": 2349,
+    "finalize": 100,
+    "finalize_pre_gst": 0,
+    "header_accept": 92,
+    "ignore": 358,
+    "ignore:TX": 10,
+    "ignore:VOTE": 348,
+    "ignore:duplicate_tx": 10,
+    "ignore:stale_height": 348,
+    "lock": 100,
+    "propose": 11,
+    "reject": 757,
+    "reject:BODY": 92,
+    "reject:PROPOSAL": 92,
+    "reject:TX": 14,
+    "reject:VOTE": 559,
+    "reject:bad_signature": 296,
+    "reject:body_without_accepted_header": 92,
+    "reject:not_owner": 2,
+    "reject:unknown_validator": 93,
+    "reject:wrong_chain": 96,
+    "reject:wrong_domain": 95,
+    "reject:wrong_proposer": 83,
+    "round_start": 110,
+    "round_start_after_round0": 0,
+    "send": 2900,
+    "send:BODY": 189,
+    "send:BODY_REQUEST": 92,
+    "send:PROPOSAL": 198,
+    "send:TX": 18,
+    "send:VOTE": 2403,
+    "tx_accept": 10,
+    "tx_submit": 16,
+    "vote_sign": 201
+  },
+  "final_state_hash": "436bc271db28bbf2ffa0b207234f922710246f1da215c0a197bbe1b485b34b1b",
+  "finalized_heights": {
+    "v0": 10,
+    "v1": 10,
+    "v2": 10,
+    "v4": 10,
+    "v5": 10,
+    "v6": 10,
+    "v7": 10,
+    "v8": 10,
+    "v9": 10
+  },
+  "pass": true,
+  "scenario": "t3_invalid_signature_domain"
+}

@@ -1,0 +1,179 @@
+{
+  "checks": [
+    {
+      "detail": "10 height đã finalize; xung đột: []",
+      "name": "no_conflicting_finalization",
+      "ok": true
+    },
+    {
+      "detail": "lịch sử không liên tục/đổi parent: []",
+      "name": "finalized_history_immutable",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "commit_has_quorum_of_distinct_validators",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "tx_applied_at_most_once",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "one_vote_per_height_round_phase",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "lock_rule_respected",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "body_only_after_header_accepted",
+      "ok": true
+    },
+    {
+      "detail": "min height=10, target=10, t=3992 ms",
+      "name": "progress_to_target_height",
+      "ok": true
+    },
+    {
+      "detail": "height chung=10",
+      "name": "same_chain_and_state_at_common_height",
+      "ok": true
+    },
+    {
+      "detail": "max latency=40 ms, Delta=50 ms, drop sau GST giữa node đúng=0",
+      "name": "post_gst_delivery_within_delta",
+      "ok": true
+    },
+    {
+      "detail": "18",
+      "name": "count[commit_cert]>=1",
+      "ok": true
+    },
+    {
+      "detail": "763",
+      "name": "count[delay:slow_link]>=50",
+      "ok": true
+    },
+    {
+      "detail": "472",
+      "name": "count[drop:partition]>=50",
+      "ok": true
+    },
+    {
+      "detail": "79",
+      "name": "count[drop:random_loss]>=50",
+      "ok": true
+    },
+    {
+      "detail": "38",
+      "name": "count[finalize_pre_gst]>=5",
+      "ok": true
+    },
+    {
+      "detail": "19",
+      "name": "count[round_start_after_round0]>=5",
+      "ok": true
+    },
+    {
+      "detail": "44",
+      "name": "count[timeout]>=5",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "block_valid": 104,
+    "commit_cert": 18,
+    "delay": 763,
+    "delay:BODY": 26,
+    "delay:BODY_REQUEST": 22,
+    "delay:COMMIT": 4,
+    "delay:PROPOSAL": 34,
+    "delay:SYNC_REQUEST": 9,
+    "delay:TX": 119,
+    "delay:VOTE": 549,
+    "delay:slow_link": 763,
+    "deliver": 2753,
+    "deliver:BODY": 109,
+    "deliver:BODY_REQUEST": 109,
+    "deliver:COMMIT": 19,
+    "deliver:PROPOSAL": 120,
+    "deliver:SYNC_REQUEST": 31,
+    "deliver:TX": 327,
+    "deliver:VOTE": 2038,
+    "drop": 551,
+    "drop:BODY": 2,
+    "drop:COMMIT": 2,
+    "drop:PROPOSAL": 18,
+    "drop:SYNC_REQUEST": 2,
+    "drop:TX": 118,
+    "drop:VOTE": 409,
+    "drop:partition": 472,
+    "drop:random_loss": 79,
+    "duplicate": 69,
+    "duplicate:BODY": 2,
+    "duplicate:BODY_REQUEST": 2,
+    "duplicate:PROPOSAL": 3,
+    "duplicate:TX": 13,
+    "duplicate:VOTE": 49,
+    "fetch": 3,
+    "fetch:BODY_REQUEST": 3,
+    "finalize": 100,
+    "finalize_pre_gst": 38,
+    "header_accept": 104,
+    "ignore": 714,
+    "ignore:BODY": 5,
+    "ignore:COMMIT": 1,
+    "ignore:PROPOSAL": 22,
+    "ignore:SYNC_REQUEST": 10,
+    "ignore:TX": 158,
+    "ignore:VOTE": 518,
+    "ignore:duplicate_body": 5,
+    "ignore:duplicate_proposal": 18,
+    "ignore:duplicate_tx": 158,
+    "ignore:duplicate_vote": 220,
+    "ignore:not_finalized": 10,
+    "ignore:stale_height": 303,
+    "lock": 87,
+    "propose": 13,
+    "resend": 45,
+    "round_start": 129,
+    "round_start_after_round0": 19,
+    "send": 2794,
+    "send:BODY": 109,
+    "send:BODY_REQUEST": 109,
+    "send:COMMIT": 19,
+    "send:PROPOSAL": 129,
+    "send:SYNC_REQUEST": 31,
+    "send:TX": 327,
+    "send:VOTE": 2070,
+    "sync_request": 33,
+    "timeout": 44,
+    "timeout:precommit": 17,
+    "timeout:prevote": 10,
+    "timeout:propose": 17,
+    "tx_accept": 217,
+    "tx_submit": 48,
+    "vote_sign": 214
+  },
+  "final_state_hash": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
+  "finalized_heights": {
+    "v0": 10,
+    "v1": 10,
+    "v2": 10,
+    "v3": 10,
+    "v4": 10,
+    "v5": 10,
+    "v6": 10,
+    "v7": 10,
+    "v8": 10,
+    "v9": 10
+  },
+  "pass": true,
+  "scenario": "t5_drop_delay_before_gst"
+}

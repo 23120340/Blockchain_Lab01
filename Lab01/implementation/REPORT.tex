@@ -1,0 +1,277 @@
+% Nguồn báo cáo. Biên dịch:  xelatex REPORT.tex  (chạy hai lần)
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1.9cm]{geometry}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setmonofont[Scale=0.86]{Consolas}
+\usepackage{booktabs,tabularx,array,enumitem,xcolor,titlesec,tikz,hyperref,fancyhdr}
+\usetikzlibrary{arrows.meta,positioning,fit}
+\hypersetup{colorlinks=true,urlcolor=blue!50!black,linkcolor=black}
+\setlist{nosep,leftmargin=1.4em}
+\titlespacing*{\section}{0pt}{9pt}{4pt}
+\titlespacing*{\subsection}{0pt}{6pt}{3pt}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\setlength{\parskip}{3pt}\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.12}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0.3pt}
+\lhead{\small Blockchain và ứng dụng — Lab 01}\rhead{\small Trang \thepage}
+
+\begin{document}
+\begin{center}
+{\LARGE\bfseries LAB 01 — Blockchain Layer 1 tối thiểu\\[2pt]}
+{\large trong mạng mô phỏng không ổn định}
+\end{center}
+
+\section{Thông tin nhóm}
+\begin{tabularx}{\linewidth}{@{}l l Y@{}}
+\toprule
+\textbf{MSSV} & \textbf{Họ tên} & \textbf{Phần việc} \\ \midrule
+% >>> CHƯA CÓ THÔNG TIN NHÓM: điền trước khi nộp <<<
+\textcolor{red}{[MSSV 1]} & \textcolor{red}{[Họ tên 1]} & \textcolor{red}{[điền]} \\
+\textcolor{red}{[MSSV 2]} & \textcolor{red}{[Họ tên 2]} & \textcolor{red}{[điền]} \\
+\bottomrule
+\end{tabularx}
+
+\section{Cấu trúc project}
+\begin{tabularx}{\linewidth}{@{}l Y@{}}
+\toprule
+\code{src/encoding.py}, \code{crypto.py} & Canonical byte encoding; Ed25519, SHA-256, domain separation, key fixture \\
+\code{src/models.py} & Transaction, block header, vote, proposal, certificate (bằng chứng quorum) \\
+\code{src/execution.py} & State key--value kèm nonce; luật sở hữu; thực thi block trên bản sao \\
+\code{src/scheduler.py}, \code{network.py} & Event queue thời gian mô phỏng; mạng trễ/mất/nhân đôi, giới hạn gửi, chặn peer \\
+\code{src/consensus.py}, \code{node.py} & Quorum, chọn proposer, vote pool; node đúng (hai pha, lock, đồng bộ) \\
+\code{src/byzantine.py} & Node Byzantine dùng để tiêm lỗi \\
+\code{src/simulator.py}, \code{oracle.py}, \code{main.py} & Dựng scenario từ cấu hình; test oracle chỉ đọc log; CLI \\
+\code{tests/} & 72 unit test, end-to-end T1--T8 và X1--X3, quét seed, đột biến; \code{run_all.py} là entry point duy nhất \\
+\code{config/}, \code{logs/} & Genesis và cấu hình từng scenario; log, summary, verdict thật của lần chạy \\
+\bottomrule
+\end{tabularx}
+
+\section{Giới thiệu}
+Hệ thống là một blockchain Layer 1 tối thiểu chạy trong simulator. Người dùng ký yêu cầu ghi dữ
+liệu của mình; proposer gom transaction thành block; các validator tự kiểm tra block rồi bỏ phiếu
+\code{PREVOTE} và \code{PRECOMMIT}; đủ quorum \code{PRECOMMIT} thì mỗi node tự finalize và cập nhật
+state. Mục tiêu: các node đúng không bao giờ finalize hai block khác nhau ở cùng height dù mạng
+trễ, mất, nhân đôi tin hay có tới $f$ validator Byzantine; sau khi mạng ổn định thì chain tiếp tục
+tiến; chạy lại cùng cấu hình cho log giống từng byte.
+
+\textbf{Các lựa chọn thiết kế chính} (đề không bắt buộc công nghệ cụ thể; đây là lựa chọn của nhóm):
+
+\begin{tabularx}{\linewidth}{@{}l Y@{}}
+\toprule
+Số validator & Mặc định $n = 10$, $f = 3$, quorum $2f+1 = 7$: thỏa cả $n = 3f+1$ lẫn ``ít nhất 8 node''. Cấu hình có $n$ không dạng $3f+1$ hoặc $< 8$ bị từ chối. \\
+Mật mã & Ed25519 và SHA-256. Bytes được ký $=$ domain $+$ \code{0x00} $+$ canonical(payload), domain là \code{TX:}, \code{HEADER:}, \code{VOTE:}, \code{PROPOSAL:} kèm \code{chain_id}. \\
+Encoding & JSON UTF-8, khóa sắp thứ tự, không khoảng trắng, cấm số thực; dùng cho mọi thứ được hash, ký và gửi qua mạng. \\
+State & Map khóa--giá trị cùng nonce của từng sender. State hash $=$ SHA-256 của canonical(\{data, nonces\}); không dùng Merkle tree. \\
+Chống replay & Nonce nằm \emph{trong} state: transaction phải mang đúng nonce kế tiếp nên chỉ áp dụng được một lần, kể cả ở block sau. \\
+Định danh block & Hash của (chain, height, parent, tx root, state hash, proposer); \emph{không} chứa round nên ổn định khi block được đề xuất lại. \\
+Consensus & Hai pha kiểu Tendermint, proposer xoay vòng theo $(\textit{height} + \textit{round}) \bmod n$, timeout tăng theo round. \\
+Mạng & Full mesh, thời gian mô phỏng nguyên (ms), một luồng, PRNG theo seed. Thông điệp được mã hóa thành bytes khi gửi nên các node không dùng chung đối tượng nào. \\
+\bottomrule
+\end{tabularx}
+
+\section{Thiết kế hệ thống}
+\subsection{Module và tương tác}
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize, box/.style={draw, rounded corners=2pt, align=center, minimum height=7mm, inner sep=3pt},
+  arr/.style={-{Stealth[length=2mm]}, thick}]
+\node[box, fill=blue!7] (mem) {Mempool\\(kiểm tra TX)};
+\node[box, fill=blue!7, right=5mm of mem] (cons) {Consensus\\proposal, vote pool, lock};
+\node[box, fill=blue!7, right=5mm of cons] (exec) {Execution\\state tạm};
+\node[box, fill=blue!7, right=5mm of exec] (led) {Ledger + state\\đã commit};
+\node[draw, dashed, rounded corners=3pt, fit=(mem)(cons)(exec)(led), inner sep=5pt, label={[font=\footnotesize\bfseries]above:Node $v_i$ (10 node, mỗi node một bộ riêng)}] (node) {};
+\node[box, fill=orange!12, below=9mm of cons, minimum width=92mm] (net) {Mạng mô phỏng: giới hạn gửi $\rightarrow$ đường truyền (trễ, mất, nhân đôi, phân vùng) $\rightarrow$ chặn peer quá tải};
+\node[box, fill=gray!12, left=6mm of net] (cli) {Workload\\client};
+\node[box, fill=gray!12, below=6mm of net, minimum width=40mm] (sch) {Event queue (thời gian mô phỏng, seed)};
+\node[box, fill=green!10, right=8mm of sch, minimum width=30mm] (log) {\code{events.log}};
+\node[box, fill=green!10, right=6mm of log] (ora) {Oracle (chỉ đọc)};
+\draw[arr] (cli) |- (mem);
+\draw[arr] (mem) -- (cons); \draw[arr] (cons) -- (exec); \draw[arr] (exec) -- (led);
+\draw[arr, <->] (cons) -- node[right]{bytes} (net);
+\draw[arr, <->] (net) -- (sch);
+\draw[arr] (sch) -- (log); \draw[arr] (log) -- (ora);
+\end{tikzpicture}
+\end{center}
+
+Simulator chỉ chuyển thông điệp, lên lịch và tạo lỗi. Nó không chọn block, không đếm phiếu, không
+sửa state hộ node. Oracle chạy sau khi mô phỏng kết thúc và chỉ đọc log cùng bản tóm tắt.
+
+\subsection{Luồng một block}
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize, >={Stealth[length=2mm]}]
+\node[draw, fill=blue!7, minimum width=26mm] (p) at (0,0.55) {Proposer};
+\node[draw, fill=blue!7, minimum width=26mm] (v) at (9.2,0.55) {Validator (mỗi node)};
+\draw[gray] (p) -- (0,-5.0); \draw[gray] (v) -- (9.2,-5.0);
+\draw[->] (0,-0.55) -- node[above]{1. \code{PROPOSAL}: header đã ký (+ bằng chứng quorum nếu đề xuất lại)} (9.2,-0.55);
+\node[right, text width=44mm] at (9.3,-0.95) {kiểm tra proposer, chữ ký, parent $\Rightarrow$ \emph{chấp nhận header}};
+\draw[<-] (0,-1.55) -- node[above]{2. \code{BODY_REQUEST}(block hash)} (9.2,-1.55);
+\draw[->] (0,-2.15) -- node[above]{3. \code{BODY}: danh sách transaction} (9.2,-2.15);
+\node[right, text width=44mm] at (9.3,-2.6) {khớp tx root, thực thi trên state tạm, so state hash};
+\draw[<->] (0,-3.25) -- node[above]{4. \code{PREVOTE}(block hoặc NIL) — gửi tới mọi node} (9.2,-3.25);
+\node[right, text width=44mm] at (9.3,-3.6) {đủ 7 \code{PREVOTE} cho block $\Rightarrow$ \emph{lock}};
+\draw[<->] (0,-4.2) -- node[above]{5. \code{PRECOMMIT}(block hoặc NIL)} (9.2,-4.2);
+\node[right, text width=44mm] at (9.3,-4.65) {đủ 7 \code{PRECOMMIT} cùng block, cùng round $\Rightarrow$ \emph{finalize}};
+\end{tikzpicture}
+\end{center}
+
+Transaction đi theo đường: client gửi vào một node $\rightarrow$ node kiểm tra rồi phát cho các
+peer $\rightarrow$ mempool $\rightarrow$ proposer chọn theo từng sender với nonce liên tiếp.
+Khi finalize, node nối block vào ledger, thay state đã commit bằng state tạm đã kiểm tra, dọn mempool
+rồi bắt đầu height mới. Hai cặp thông điệp phụ phục vụ node bị chậm: \code{SYNC_REQUEST} / \code{COMMIT}
+(xin header kèm 7 \code{PRECOMMIT} của một height đã finalize) và \code{HEADER_REQUEST} / \code{HEADER}
+(khi đã thấy quorum \code{PRECOMMIT} cho một block chưa có header). Cả hai đường đều kết thúc bằng
+chính handshake \code{BODY_REQUEST} $\rightarrow$ \code{BODY} ở trên.
+
+\section{Ghi chú triển khai}
+\subsection{Các guard}
+Mỗi thông điệp bị từ chối đều sinh một dòng \code{reject} trong log kèm \code{reason}:
+
+\begin{tabularx}{\linewidth}{@{}l Y@{}}
+\toprule
+\textbf{Guard} & \textbf{Cách hiện thực và lý do ghi trong log} \\ \midrule
+Dạng dữ liệu & So kiểu chặt từng trường trước khi dùng: \code{malformed}. \\
+Chain, domain & So \code{chain_id} rồi so domain khai báo: \code{wrong_chain}, \code{wrong_domain}. \\
+Chữ ký & Xác minh trên domain mong đợi; chữ ký tạo ở domain khác không qua được: \code{bad_signature}. Người ký ngoài registry: \code{unknown_validator}, \code{unknown_sender}. \\
+Transaction & Khóa phải bắt đầu bằng \code{<sender>/}: \code{not_owner}. Nonce thấp hơn state: \code{stale_nonce} ở mempool, \code{replayed_nonce} khi thực thi. \\
+Proposal & Người ký phải là proposer của (height, round): \code{wrong_proposer}. Header phải khớp hash, đúng height, parent là block đã finalize gần nhất: \code{header_hash_mismatch}, \code{bad_parent}. Đề xuất lại phải kèm đủ 7 \code{PREVOTE} hợp lệ: \code{bad_pol}. \\
+Body & Chỉ nhận body của header đã chấp nhận: \code{body_without_accepted_header}. Body phải khớp tx root: \code{tx_root_mismatch}. Thực thi sai hoặc lệch state hash: sự kiện \code{block_invalid}, node prevote NIL. \\
+Phiếu & Pool giữ một phiếu cho mỗi (validator, round, phase): phiếu lặp bị bỏ (\code{duplicate_vote}), phiếu thứ hai khác nội dung không được tính và ghi \code{equivocation}. \\
+Ký phiếu & Node tra bảng (height, round, phase) trước khi ký; đã ký rồi thì không ký nữa, kể cả NIL. \\
+Mạng & Gửi quá hạn mức trong một cửa sổ thì tin \emph{xếp hàng} (\code{delay}); peer gửi dồn bị chặn tạm (\code{block}), tin của nó bị bỏ (\code{drop}), hết hạn thì \code{unblock}. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Chiến lược truyền tin}
+\begin{itemize}
+\item \textbf{Header trước, body sau, theo yêu cầu.} Proposer chỉ phát header. Body chỉ rời node khi
+người nhận gửi \code{BODY_REQUEST}, tức sau khi người nhận đã chấp nhận header. Thứ tự gọi hàm không
+đủ bảo đảm điều này khi mạng đảo thứ tự, nên handshake là tường minh và oracle kiểm lại trên log.
+\item \textbf{Phát trực tiếp, không chuyển tiếp.} Mạng là full mesh nên phiếu và transaction được
+gửi thẳng tới mọi peer; node không chuyển tiếp tin của node khác.
+\item \textbf{Gửi lại khi đứng yên.} Nếu một node không đổi bước trong 300 ms, nó gửi lại phiếu của
+round hiện tại (và proposal nếu nó là proposer). Nhờ vậy tin bị mất trước GST được bù sau GST.
+\item \textbf{Bắt kịp round và height.} Thấy $f+1$ validator ở round cao hơn thì nhảy tới round đó.
+Thấy tin của height cao hơn thì sau 100 ms xin \code{COMMIT} của height đang thiếu, kiểm tra 7 chữ ký
+rồi mới lấy body và finalize.
+\item \textbf{Partial synchrony.} Trước GST mạng được mất, nhân đôi, trễ tùy cấu hình. Tin gửi lúc $t$
+luôn tới trước $\max(t, \mathrm{GST}) +$ cận đường truyền. Hàng chờ của giới hạn gửi cộng vào độ trễ,
+nên bộ test đo độ trễ thật sau GST giữa các node đúng và yêu cầu nó $\le \Delta$.
+\end{itemize}
+
+\subsection{Các bước consensus và locking (mục 6.1 của đề)}
+Mỗi node có một hàm duy nhất xét lại các luật sau mỗi thay đổi, theo thứ tự:
+\begin{enumerate}
+\item \textbf{Finalize}: có 7 \code{PRECOMMIT} cho cùng block ở cùng round và block đã được kiểm tra.
+Thiếu header hoặc body thì đi lấy qua mạng trước; không bao giờ commit state chưa kiểm tra.
+\item \textbf{Lock}: quan sát 7 \code{PREVOTE} cho một block khác NIL ở round \emph{muộn hơn} round đang
+lock thì lock block đó và ghi round. Timeout không xóa lock.
+\item \textbf{Prevote}: chỉ prevote block đã qua mọi guard. Nếu đang lock block khác thì prevote NIL;
+node chỉ đổi sang block mới khi bước 2 đã chuyển lock nhờ bằng chứng ở round muộn hơn.
+\item \textbf{Precommit}: precommit block vừa lock ở round hiện tại; đủ 7 \code{PREVOTE} NIL hoặc hết
+giờ thì precommit NIL.
+\item \textbf{Đổi round}: đủ 7 \code{PRECOMMIT} bất kỳ mà chưa quyết định thì hẹn giờ rồi sang round sau.
+\end{enumerate}
+
+\textbf{Bằng chứng đổi lock.} Proposer đã thấy quorum \code{PREVOTE} cho block $B$ ở round $r$ sẽ đề
+xuất lại chính $B$ và đính kèm 7 phiếu đó. Node đang lock block khác ở round $< r$ kiểm tra 7 chữ ký
+rồi chuyển lock sang $B$. Bằng chứng quorum (kèm proposal hoặc trong \code{COMMIT}) được kiểm tra độc
+lập với vote pool: đủ 7 validator khác nhau ký đúng cùng (height, round, phase, block). Điều này cần
+thiết vì một node có thể đã nhận trước phiếu xung đột của validator Byzantine; pool chỉ tính phiếu
+đến trước, nên nếu chỉ dựa vào pool thì node đó không bao giờ gom đủ quorum để bắt kịp. NIL khác với
+block rỗng: block rỗng là block hợp lệ không có transaction và vẫn được finalize.
+
+\subsection{Tính tái lập}
+Thời gian là số nguyên mô phỏng; event queue sắp theo (thời điểm, số thứ tự đăng ký); mọi ngẫu nhiên
+lấy từ một PRNG theo seed; khóa là fixture suy từ tên; mọi vòng lặp trên tập hợp đều sắp thứ tự. Log
+không chứa wall-clock, PID hay đường dẫn. Bộ kiểm tra chạy hai process riêng và so nguyên văn bytes.
+
+\subsection{Lỗi thực tế đã gặp và cách sửa}
+\begin{enumerate}
+\item \textbf{Peer vừa hết hạn chặn bị chặn lại ngay.} Bộ đếm tin của cửa sổ hiện tại không được xóa
+khi chặn, nên tin đầu tiên sau khi mở vẫn vượt ngưỡng. Unit test \code{test_peer_guard_blocks_then_releases}
+bắt được; sửa bằng cách đặt lại bộ đếm tại thời điểm chặn.
+\item \textbf{T7 ban đầu quá yếu.} Mỗi node đúng chỉ nhận một trong hai phiếu xung đột nên không node
+nào thấy equivocation (0 lần). Sau khi cho gửi cả hai phiếu, thứ tự đến lại gần như ngẫu nhiên: khi cố
+tình hạ quorum xuống $2f$, vẫn không có finalize xung đột ở 20/20 seed, tức bài test không phân biệt
+được quorum đúng với quorum sai. Sửa bằng cách gửi phiếu thứ hai trễ hơn cận mạng; sau đó quorum $2f$
+sinh xung đột ở 20/20 seed.
+\item \textbf{T5 ban đầu đạt một cách vô nghĩa.} Với mất 30\% và phân vùng 6/4, không height nào được
+finalize trước GST nên ``không double finalization'' đúng hiển nhiên. Chỉnh lại để nhóm 8 node vẫn đủ
+quorum: nay có 38 sự kiện finalize trước GST và hai node bị cô lập phải bắt kịp bằng \code{COMMIT}.
+\item \textbf{Không có kịch bản nào mà luật lock thực sự quyết định safety.} Bỏ hẳn luật lock, T7 vẫn
+không sinh xung đột. Thêm X3 (giấu commit): phe Byzantine cho riêng một node đủ \code{PRECOMMIT} để nó
+finalize $A$ một mình, rồi ở round sau cùng bỏ phiếu cho block khác. Với bản đúng, các node đã lock $A$
+prevote NIL và không có xung đột; bỏ luật lock thì xung đột ở 20/20 seed.
+\end{enumerate}
+
+\section{Kiểm thử và kết quả}
+Toàn bộ số liệu dưới đây lấy từ lần chạy thật \code{python -m tests.run_all} (seed và cấu hình trong
+\code{config/}, log trong \code{logs/}, bảng tổng hợp ở \code{logs/RESULTS.md}). Unit test: \textbf{72/72
+đạt}, gồm chữ ký và domain, luật state, đếm phiếu, kiểm tra block, locking qua nhiều round, mạng, cô lập
+node. Mỗi scenario dùng 10 validator và phải đạt height mục tiêu trong thời gian mô phỏng giới hạn.
+
+\textbf{Safety được kiểm trên mọi sự kiện finalize}, không chỉ state cuối: mỗi height chỉ có một
+(block hash, state hash) trong số các node đúng; lịch sử của từng node liên tục và nối đúng parent;
+mỗi lần finalize có ít nhất 7 người ký khác nhau; không node đúng nào ký hai phiếu cho cùng (height,
+round, phase) hay prevote trái với lock; không body nào rời node đúng trước yêu cầu của người nhận;
+không transaction nào xuất hiện hai lần. Sau GST, độ trễ lớn nhất giữa các node đúng đo được là 40 ms
+(45 ms ở T2, nơi cận đường truyền được cấu hình là 45 ms), đều trong $\Delta = 50$ ms, và không có
+tin nào giữa các node đúng bị mất; riêng X1 là 49 ms ($\Delta = 80$ ms) do tin phải xếp hàng.
+
+\textbf{Quét seed.} T5, T7 và X3 được chạy lại với 20 seed mỗi kịch bản: 60/60 lượt giữ safety và
+60/60 lượt đạt height mục tiêu.
+
+\textbf{Bộ test có bắt được lỗi không.} Hai đột biến được áp lên node đúng trong lúc test (mã nguồn
+không đổi): quorum $2f$ thay cho $2f+1$ trên T7, và bỏ luật lock trên X3. Oracle báo finalize xung đột
+ở 3/3 seed cho mỗi đột biến, trong khi bản gốc đạt.
+
+{\small
+\begin{tabularx}{\linewidth}{@{}l p{33mm} p{36mm} l Y@{}}
+\toprule
+& \textbf{Kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Đạt} & \textbf{Kết quả quan sát (đếm từ log)} \\ \midrule
+T1 & Bình thường & Cùng chain, cùng state hash & có & 12/12 height trong 1463 ms; 0 timeout, 0 tin mất \\
+T2 & Nhân đôi 30\%, đảo thứ tự & Không đếm phiếu lặp, không xung đột & có & 887 tin bị nhân đôi; 355 phiếu lặp bị bỏ; 12/12 height \\
+T3 & Chữ ký sai, sai domain & Từ chối, có log lý do & có & từ chối 296 \code{bad_signature}, 95 \code{wrong_domain}, 96 \code{wrong_chain}, 93 \code{unknown_validator}; state chỉ có giao dịch hợp lệ \\
+T4 & Phát lại transaction & Áp dụng tối đa một lần & có & 44 lần từ chối \code{stale_nonce}, 42 lần bỏ trùng, 9 lượt bác block chứa transaction cũ; \code{alice/message = b}, nonce $= 2$ \\
+T5 & Mất, trễ trước GST & Safety giữ & có & 551 tin mất, 763 tin trễ quá cận; 38 finalize trước GST; 18 \code{COMMIT} để bắt kịp; 10/10 height lúc 3992 ms \\
+T6 & Proposer im lặng, crash & Timeout đổi round, chain tiếp tục & có & 2 node dừng; 25 lần hết giờ propose; 25 lượt vào round $> 0$; 12/12 height \\
+T7 & 3 Byzantine equivocate & Không xung đột & có & 5 lần đề xuất hai block, 79 cặp phiếu xung đột, node đúng ghi nhận 248 equivocation; 12/12 height \\
+T8 & Chạy lại cùng seed & Log giống từng byte & có & 10/10 scenario giống từng byte và cùng state hash (1,1--1,9 MB mỗi log) \\ \midrule
+X1 & Giới hạn gửi, gửi dồn & Tin xếp hàng; chặn rồi mở & có & 183 tin xếp hàng; 3 lần chặn, 3 lần mở; 919 tin của node gửi dồn bị bỏ \\
+X2 & Proposer đề xuất block sai & Bác block, chain tiếp tục & có & 18 lượt bác vì lệch state hash, 9 lượt vì ghi khóa người khác; state không đổi \\
+X3 & Giấu commit phá lock & Không xung đột & có & 9 lần giấu commit; node bị bỏ lại bắt kịp bằng 18 \code{COMMIT} \\
+\bottomrule
+\end{tabularx}}
+
+\textbf{Bất thường và giới hạn.}
+\begin{itemize}
+\item T5 và T7 kiểm thêm việc chain tiến tới mục tiêu sau GST. Đây là kiểm tra bổ sung; kết quả bắt
+buộc theo đề của hai test này chỉ là safety.
+\item Ở T7 và X3, các node thuộc nhóm bị gửi block khác thường finalize chậm hơn vài trăm ms và bắt
+kịp bằng \code{COMMIT}; các height có proposer Byzantine đều cần thêm một round.
+\item Đếm cả hai phiếu xung đột của cùng một validator (mỗi phiếu vào tổng của block tương ứng) không
+sinh ra xung đột trong T7 và X3. Luật ``mỗi validator một phiếu'' vì vậy được chứng minh bằng unit test
+trên vote pool, không phải bằng end-to-end.
+\item Hệ thống không lưu xuống đĩa và không khôi phục sau khi khởi động lại; node crash là dừng hẳn.
+Mạng là full mesh, không có chuyển tiếp nhiều chặng. Node chỉ giữ tạm thông điệp của height kế tiếp.
+\item Các node Byzantine thông đồng qua một đối tượng dùng chung của phe tấn công; node đúng không
+truy cập đối tượng này.
+\end{itemize}
+
+\section{Tài liệu tham khảo}
+\begin{enumerate}
+\item Đề bài \emph{Lab 01} và slide \emph{Lab 01: Node Architecture, Clients, and State Synchronization},
+môn Blockchain và ứng dụng, Bộ môn Công nghệ Tri thức, 2026.
+\item E. Buchman, J. Kwon, Z. Milosevic. \emph{The latest gossip on BFT consensus}. arXiv:1807.04938, 2018.
+\url{https://arxiv.org/abs/1807.04938}
+\item C. Dwork, N. Lynch, L. Stockmeyer. \emph{Consensus in the Presence of Partial Synchrony}. Journal of the ACM 35(2), 1988.
+\item M. Castro, B. Liskov. \emph{Practical Byzantine Fault Tolerance}. OSDI 1999.
+\item S. Josefsson, I. Liusvaara. \emph{RFC 8032: Edwards-Curve Digital Signature Algorithm (EdDSA)}. 2017. \url{https://www.rfc-editor.org/rfc/rfc8032}
+\item Tài liệu thư viện \code{cryptography} (Ed25519): \url{https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ed25519/}
+\item Tài liệu \code{pytest}: \url{https://docs.pytest.org/}
+\item Công cụ hỗ trợ: Claude (Anthropic) được dùng để hỗ trợ lập trình, kiểm thử và soạn báo cáo.
+\end{enumerate}
+\end{document}

@@ -1,0 +1,149 @@
+{
+  "checks": [
+    {
+      "detail": "12 height đã finalize; xung đột: []",
+      "name": "no_conflicting_finalization",
+      "ok": true
+    },
+    {
+      "detail": "lịch sử không liên tục/đổi parent: []",
+      "name": "finalized_history_immutable",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "commit_has_quorum_of_distinct_validators",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "tx_applied_at_most_once",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "one_vote_per_height_round_phase",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "lock_rule_respected",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "body_only_after_header_accepted",
+      "ok": true
+    },
+    {
+      "detail": "min height=12, target=12, t=2134 ms",
+      "name": "progress_to_target_height",
+      "ok": true
+    },
+    {
+      "detail": "height chung=12",
+      "name": "same_chain_and_state_at_common_height",
+      "ok": true
+    },
+    {
+      "detail": "max latency=40 ms, Delta=50 ms, drop sau GST giữa node đúng=0",
+      "name": "post_gst_delivery_within_delta",
+      "ok": true
+    },
+    {
+      "detail": "9",
+      "name": "count[block_invalid:invalid_tx:not_owner]>=8",
+      "ok": true
+    },
+    {
+      "detail": "18",
+      "name": "count[block_invalid:state_hash_mismatch]>=8",
+      "ok": true
+    },
+    {
+      "detail": "3",
+      "name": "count[byz_invalid_block]>=3",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=None, mong đợi=None",
+      "name": "state[alice/message]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=4, mong đợi=4",
+      "name": "nonce[alice]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=4, mong đợi=4",
+      "name": "nonce[bob]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=4, mong đợi=4",
+      "name": "nonce[carol]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=4, mong đợi=4",
+      "name": "nonce[dave]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=0, mong đợi=0",
+      "name": "nonce[v6]",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "block_invalid": 27,
+    "block_invalid:invalid_tx:not_owner": 9,
+    "block_invalid:state_hash_mismatch": 18,
+    "block_valid": 108,
+    "byz_invalid_block": 3,
+    "deliver": 3379,
+    "deliver:BODY": 135,
+    "deliver:BODY_REQUEST": 135,
+    "deliver:PROPOSAL": 135,
+    "deliver:TX": 288,
+    "deliver:VOTE": 2686,
+    "finalize": 120,
+    "finalize_pre_gst": 0,
+    "header_accept": 135,
+    "ignore": 595,
+    "ignore:TX": 160,
+    "ignore:VOTE": 435,
+    "ignore:duplicate_tx": 160,
+    "ignore:stale_height": 435,
+    "lock": 120,
+    "propose": 13,
+    "round_start": 160,
+    "round_start_after_round0": 30,
+    "send": 3411,
+    "send:BODY": 135,
+    "send:BODY_REQUEST": 135,
+    "send:PROPOSAL": 144,
+    "send:TX": 288,
+    "send:VOTE": 2709,
+    "timeout": 33,
+    "timeout:precommit": 30,
+    "timeout:propose": 3,
+    "tx_accept": 160,
+    "tx_submit": 32,
+    "vote_sign": 301
+  },
+  "final_state_hash": "a890275cc335b326d23a1ec2bc71954d1c624fc734db24ccca72b37dde5f6359",
+  "finalized_heights": {
+    "v0": 12,
+    "v1": 12,
+    "v3": 12,
+    "v4": 12,
+    "v5": 12,
+    "v7": 12,
+    "v8": 12,
+    "v9": 12
+  },
+  "pass": true,
+  "scenario": "x2_invalid_block_proposer"
+}

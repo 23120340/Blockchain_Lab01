@@ -1,0 +1,152 @@
+{
+  "checks": [
+    {
+      "detail": "13 height đã finalize; xung đột: []",
+      "name": "no_conflicting_finalization",
+      "ok": true
+    },
+    {
+      "detail": "lịch sử không liên tục/đổi parent: []",
+      "name": "finalized_history_immutable",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "commit_has_quorum_of_distinct_validators",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "tx_applied_at_most_once",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "one_vote_per_height_round_phase",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "lock_rule_respected",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "body_only_after_header_accepted",
+      "ok": true
+    },
+    {
+      "detail": "min height=12, target=12, t=2454 ms",
+      "name": "progress_to_target_height",
+      "ok": true
+    },
+    {
+      "detail": "height chung=12",
+      "name": "same_chain_and_state_at_common_height",
+      "ok": true
+    },
+    {
+      "detail": "max latency=40 ms, Delta=50 ms, drop sau GST giữa node đúng=0",
+      "name": "post_gst_delivery_within_delta",
+      "ok": true
+    },
+    {
+      "detail": "5",
+      "name": "count[byz_equivocate_proposal]>=3",
+      "ok": true
+    },
+    {
+      "detail": "79",
+      "name": "count[byz_equivocate_vote]>=30",
+      "ok": true
+    },
+    {
+      "detail": "248",
+      "name": "count[equivocation]>=30",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[alice]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[bob]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[carol]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=6, mong đợi=6",
+      "name": "nonce[dave]",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "block_valid": 135,
+    "byz_equivocate_proposal": 5,
+    "byz_equivocate_vote": 79,
+    "commit_cert": 24,
+    "deliver": 3858,
+    "deliver:BODY": 135,
+    "deliver:BODY_REQUEST": 137,
+    "deliver:COMMIT": 24,
+    "deliver:PROPOSAL": 146,
+    "deliver:SYNC_REQUEST": 34,
+    "deliver:TX": 432,
+    "deliver:VOTE": 2950,
+    "equivocation": 248,
+    "equivocation:VOTE": 248,
+    "finalize": 127,
+    "finalize_pre_gst": 0,
+    "header_accept": 138,
+    "ignore": 902,
+    "ignore:BODY_REQUEST": 2,
+    "ignore:PROPOSAL": 16,
+    "ignore:SYNC_REQUEST": 10,
+    "ignore:TX": 240,
+    "ignore:VOTE": 634,
+    "ignore:duplicate_proposal": 1,
+    "ignore:duplicate_tx": 240,
+    "ignore:not_finalized": 10,
+    "ignore:stale_height": 649,
+    "ignore:unknown_block": 2,
+    "lock": 103,
+    "propose": 11,
+    "resend": 1,
+    "round_start": 159,
+    "round_start_after_round0": 22,
+    "send": 3888,
+    "send:BODY": 135,
+    "send:BODY_REQUEST": 138,
+    "send:COMMIT": 24,
+    "send:PROPOSAL": 153,
+    "send:SYNC_REQUEST": 36,
+    "send:TX": 432,
+    "send:VOTE": 2970,
+    "sync_request": 36,
+    "timeout": 39,
+    "timeout:precommit": 22,
+    "timeout:prevote": 10,
+    "timeout:propose": 7,
+    "tx_accept": 240,
+    "tx_submit": 48,
+    "vote_sign": 253
+  },
+  "final_state_hash": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
+  "finalized_heights": {
+    "v0": 13,
+    "v2": 13,
+    "v3": 13,
+    "v5": 13,
+    "v6": 12,
+    "v8": 12,
+    "v9": 12
+  },
+  "pass": true,
+  "scenario": "t7_byzantine_equivocation"
+}

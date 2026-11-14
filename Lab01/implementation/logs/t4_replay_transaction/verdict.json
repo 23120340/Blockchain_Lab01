@@ -1,0 +1,144 @@
+{
+  "checks": [
+    {
+      "detail": "14 height đã finalize; xung đột: []",
+      "name": "no_conflicting_finalization",
+      "ok": true
+    },
+    {
+      "detail": "lịch sử không liên tục/đổi parent: []",
+      "name": "finalized_history_immutable",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "commit_has_quorum_of_distinct_validators",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "tx_applied_at_most_once",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "one_vote_per_height_round_phase",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "lock_rule_respected",
+      "ok": true
+    },
+    {
+      "detail": "[]",
+      "name": "body_only_after_header_accepted",
+      "ok": true
+    },
+    {
+      "detail": "min height=14, target=14, t=2126 ms",
+      "name": "progress_to_target_height",
+      "ok": true
+    },
+    {
+      "detail": "height chung=14",
+      "name": "same_chain_and_state_at_common_height",
+      "ok": true
+    },
+    {
+      "detail": "max latency=40 ms, Delta=50 ms, drop sau GST giữa node đúng=0",
+      "name": "post_gst_delivery_within_delta",
+      "ok": true
+    },
+    {
+      "detail": "9",
+      "name": "count[block_invalid:invalid_tx:replayed_nonce]>=5",
+      "ok": true
+    },
+    {
+      "detail": "2",
+      "name": "count[byz_invalid_block]>=1",
+      "ok": true
+    },
+    {
+      "detail": "16",
+      "name": "count[byz_replay]>=3",
+      "ok": true
+    },
+    {
+      "detail": "42",
+      "name": "count[ignore:duplicate_tx]>=2",
+      "ok": true
+    },
+    {
+      "detail": "44",
+      "name": "count[reject:stale_nonce]>=5",
+      "ok": true
+    },
+    {
+      "detail": "thực tế='b', mong đợi='b'",
+      "name": "state[alice/message]",
+      "ok": true
+    },
+    {
+      "detail": "thực tế=2, mong đợi=2",
+      "name": "nonce[alice]",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "block_invalid": 18,
+    "block_invalid:invalid_tx:replayed_nonce": 9,
+    "block_invalid:state_hash_mismatch": 9,
+    "block_valid": 126,
+    "byz_invalid_block": 2,
+    "byz_replay": 16,
+    "deliver": 5034,
+    "deliver:BODY": 144,
+    "deliver:BODY_REQUEST": 144,
+    "deliver:PROPOSAL": 284,
+    "deliver:TX": 90,
+    "deliver:VOTE": 4372,
+    "finalize": 140,
+    "finalize_pre_gst": 0,
+    "header_accept": 146,
+    "ignore": 2153,
+    "ignore:PROPOSAL": 138,
+    "ignore:TX": 42,
+    "ignore:VOTE": 1973,
+    "ignore:duplicate_tx": 42,
+    "ignore:stale_height": 2111,
+    "lock": 140,
+    "propose": 15,
+    "reject": 44,
+    "reject:TX": 44,
+    "reject:stale_nonce": 44,
+    "round_start": 170,
+    "round_start_after_round0": 20,
+    "send": 5150,
+    "send:BODY": 144,
+    "send:BODY_REQUEST": 146,
+    "send:PROPOSAL": 297,
+    "send:TX": 90,
+    "send:VOTE": 4473,
+    "timeout": 22,
+    "timeout:precommit": 20,
+    "timeout:propose": 2,
+    "tx_accept": 20,
+    "tx_submit": 16,
+    "vote_sign": 321
+  },
+  "final_state_hash": "1f1805a8c0403be6e769eb8bf5264810e39bd88655520631e932e7665d61bfe2",
+  "finalized_heights": {
+    "v0": 14,
+    "v1": 14,
+    "v3": 14,
+    "v4": 14,
+    "v5": 14,
+    "v6": 14,
+    "v8": 14,
+    "v9": 14
+  },
+  "pass": true,
+  "scenario": "t4_replay_transaction"
+}
