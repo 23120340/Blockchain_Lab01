@@ -8,9 +8,10 @@ import os
 import random
 
 from .byzantine import ByzantineNode
-from .crypto import fixture_keypair, sha256_hex
+from .crypto import fixture_keypair, sha256_hex, sign
 from .encoding import canonical
-from .models import make_tx, tx_domain
+from .execution import State
+from .models import TX_FIELDS, make_tx, payload, vote_domain
 from .network import Network, merge_net_config
 from .node import Node
 from .scheduler import EventLog, Scheduler
@@ -67,20 +68,17 @@ def _make_workload_tx(chain_id, spec):
     elif corrupt == "tampered":
         tx["value"] = tx["value"] + "-tampered"       # sửa nội dung sau khi ký
     elif corrupt == "wrong_domain":
-        from .crypto import sign
-        from .models import TX_FIELDS, payload, vote_domain
+        # Tự khai domain VOTE và ký đúng dưới domain đó.
         tx["domain"] = vote_domain(chain_id)
         tx["sig"] = sign(signer, vote_domain(chain_id), payload(tx, TX_FIELDS))
     elif corrupt == "cross_domain":
-        from .crypto import sign
-        from .models import TX_FIELDS, payload, vote_domain
+        # Khai domain TX nhưng chữ ký được tạo dưới domain VOTE.
         tx["sig"] = sign(signer, vote_domain(chain_id), payload(tx, TX_FIELDS))
     elif corrupt == "wrong_chain":
         tx = make_tx(signer, "other-chain", spec["sender"], spec["nonce"], spec["key"],
                      spec["value"])
     elif corrupt is not None:
         raise ConfigError(f"corrupt không hỗ trợ: {corrupt}")
-    assert corrupt != "wrong_domain" or tx["domain"] != tx_domain(chain_id)
     return tx
 
 
@@ -163,6 +161,13 @@ class Simulation:
         return self.log.to_bytes(), self.summary()
 
     def summary(self):
+        """Tóm tắt sau khi chạy.
+
+        Các node đúng có thể dừng ở height khác nhau (node nhanh đã finalize thêm block
+        khi node chậm nhất vừa tới mục tiêu), nên "state cuối" được lấy tại height chung
+        cao nhất mà MỌI node đúng đã finalize; state hash của từng node ở height đó phải
+        trùng nhau.
+        """
         net_cfg = merge_net_config(self.cfg.get("network"))
         nodes = {}
         for vid in self.validators:
@@ -171,9 +176,14 @@ class Simulation:
                           "state_hash": node.state.hash(),
                           "chain": [entry["hash"] for entry in node.ledger]}
         common = min(nodes[v]["finalized_height"] for v in self.correct)
-        ref = self.nodes[self.correct[0]]
+
+        def state_at_common(vid):
+            ledger = self.nodes[vid].ledger
+            return ledger[common - 1]["state"] if common else State()
+
+        hashes = {state_at_common(v).hash() for v in self.correct}
+        ref = state_at_common(self.correct[0])
         log_bytes = self.log.to_bytes()
-        hashes = {nodes[v]["state_hash"] for v in self.correct}
         return {
             "scenario": self.cfg.get("name"), "seed": self.cfg.get("seed", 1),
             "chain_id": self.chain_id, "n": len(self.validators),
@@ -186,7 +196,7 @@ class Simulation:
             "faulty_nodes": {v: self.byz_cfg[v].get("modes", []) for v in sorted(self.byz_cfg)},
             "min_correct_height": common,
             "final_state_hash": hashes.pop() if len(hashes) == 1 else None,
-            "final_state": {"data": ref.state.data, "nonces": ref.state.nonces},
+            "final_state": {"height": common, "data": ref.data, "nonces": ref.nonces},
             "nodes": nodes,
             "network": dict(self.net.stats),
             "log_lines": len(self.log.lines),

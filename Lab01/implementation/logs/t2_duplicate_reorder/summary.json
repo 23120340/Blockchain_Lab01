@@ -31,6 +31,7 @@
       "dave/k1": "v19",
       "dave/k2": "v23"
     },
+    "height": 12,
     "nonces": {
       "alice": 6,
       "bob": 6,
@@ -40,8 +41,8 @@
   },
   "final_state_hash": "4c98559b4eee4ead600c37c8c1a9d289d9860485384f741e17338520ff60507f",
   "gst": 0,
-  "log_lines": 11266,
-  "log_sha256": "4e0e6f89c047a50341b73b7fc4cb37efc2238eab736258c6248659dc20cd27be",
+  "log_lines": 10379,
+  "log_sha256": "bc474654d57bab82745e2f2e6474ae1586156ee6935fd7e0a6abc713f61da069",
   "min_correct_height": 12,
   "n": 10,
   "network": {

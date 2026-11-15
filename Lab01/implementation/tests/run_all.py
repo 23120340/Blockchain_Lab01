@@ -1,7 +1,7 @@
 """MỘT entry point cho toàn bộ kiểm thử:  python -m tests.run_all
 
   1. Unit tests (pytest tests/unit)
-  2. End-to-end T1-T7 + X1, X2: chạy, ghi logs/<scenario>/, oracle đánh giá
+  2. End-to-end T1-T7 + X1-X3: chạy, ghi logs/<scenario>/, oracle đánh giá
   3. Quét nhiều seed cho T5, T7, X3 (safety + tiến triển)
   4. T8: mỗi scenario chạy hai lần ở hai process, so bytes của log và state hash
   5. Độ nhạy: cố tình làm hỏng node đúng, oracle phải báo finalize xung đột
@@ -28,7 +28,8 @@ def run_unit_tests():
     text = proc.stdout.decode("utf-8", "replace") + proc.stderr.decode("utf-8", "replace")
     with open(os.path.join(LOG_DIR, "unit_tests.txt"), "wb") as fh:
         fh.write(text.replace("\r\n", "\n").encode("utf-8"))
-    tail = [line for line in text.splitlines() if line.strip()][-1]
+    lines = [line for line in text.splitlines() if line.strip()]
+    tail = lines[-1] if lines else "pytest không in ra gì"
     return proc.returncode == 0, tail
 
 

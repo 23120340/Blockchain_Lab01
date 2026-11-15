@@ -25,6 +25,7 @@
     "data": {
       "alice/message": "b"
     },
+    "height": 14,
     "nonces": {
       "alice": 2
     }
@@ -32,7 +33,7 @@
   "final_state_hash": "1f1805a8c0403be6e769eb8bf5264810e39bd88655520631e932e7665d61bfe2",
   "gst": 0,
   "log_lines": 13533,
-  "log_sha256": "58e208df765e1ff40c37a29691e364214d55692cdf166cb8007c029c3bcbb623",
+  "log_sha256": "d131c679a8965a3368a3a90af680481fd23c1f671a1b0ae10b7aabbdc3a92371",
   "min_correct_height": 14,
   "n": 10,
   "network": {

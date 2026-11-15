@@ -1,0 +1,4 @@
+# Log và kết quả là bằng chứng so từng byte (summary.json ghi sha256 của events.log):
+# không cho Git đổi LF thành CRLF khi checkout trên Windows.
+Lab01/implementation/logs/** -text
+Lab01/implementation/config/** -text

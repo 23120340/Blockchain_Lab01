@@ -32,7 +32,7 @@ SCENARIOS = [
      "Node đã lock không đổi phiếu; không finalize xung đột"),
 ]
 
-# Chạy lại T5 và T7 với nhiều seed: safety là tính chất phải đúng với MỌI lịch mạng.
+# Chạy lại T5, T7 và X3 với nhiều seed: safety là tính chất phải đúng với MỌI lịch mạng.
 SWEEP = {"t5_drop_delay_before_gst": list(range(1, 21)),
          "t7_byzantine_equivocation": list(range(1, 21)),
          "x3_withheld_commit": list(range(1, 21))}

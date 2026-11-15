@@ -106,6 +106,8 @@ class Network:
                 "round": round, "hash": block_hash}
         now = self.sched.now
         self.stats["sent"] += 1
+        # Mọi lần gửi đều có dòng "send", kể cả tin sau đó bị trễ, mất hay bị chặn.
+        self._emit(src, "send", meta, peer=dst)
         depart = now if src in self.exempt else self.limiters[src].reserve(now)
         if depart > now:
             self.stats["rate_delayed"] += 1
@@ -126,22 +128,24 @@ class Network:
                     return True
         return False
 
-    def _drop(self, node, peer, meta, reason, submit_t, src, dst):
+    def _drop(self, node, peer, meta, reason, src, dst):
         self.stats["dropped"] += 1
-        if submit_t >= self.gst and src in self.correct and dst in self.correct:
+        # Sau GST, tin giữa hai node đúng không được mất (kể cả tin gửi trước GST nhưng
+        # vì xếp hàng mà tới lượt truyền sau GST).
+        if self.sched.now >= self.gst and src in self.correct and dst in self.correct:
             self.stats["post_gst_correct_drops"] += 1
         self._emit(node, "drop", meta, peer=peer, reason=reason)
 
     def _transmit(self, src, dst, raw, meta, submit_t):
         now = self.sched.now
         if self._partitioned(src, dst, now):
-            self._drop(src, dst, meta, "partition", submit_t, src, dst)
+            self._drop(src, dst, meta, "partition", src, dst)
             return
         phase = self.cfg["pre_gst"] if now < self.gst else self.cfg["post_gst"]
         lost = self.rng.randrange(1000) < phase.get("drop_permille", 0)
         dup = self.rng.randrange(1000) < phase.get("dup_permille", 0)
         if lost:
-            self._drop(src, dst, meta, "random_loss", submit_t, src, dst)
+            self._drop(src, dst, meta, "random_loss", src, dst)
             return
         self._schedule_delivery(src, dst, raw, meta, submit_t, phase, copy=0)
         if dup:
@@ -155,14 +159,13 @@ class Network:
         delay = self.rng.randint(phase["delay_min"], phase["delay_max"])
         # Partial synchrony: tin gửi lúc t đến chậm nhất tại max(t, GST) + cận đường truyền.
         arrive = min(now + delay, max(now, self.gst) + post_max)
-        self._emit(src, "send", meta, peer=dst, delay=arrive - now, copy=copy or None)
         if arrive - now > post_max:
             self._emit(src, "delay", meta, peer=dst, reason="slow_link", wait=arrive - now)
-        self.sched.at(arrive, self._deliver, src, dst, raw, meta, submit_t)
+        self.sched.at(arrive, self._deliver, src, dst, raw, meta, submit_t, copy)
 
     # ---- nhận -------------------------------------------------------------
 
-    def _deliver(self, src, dst, raw, meta, submit_t):
+    def _deliver(self, src, dst, raw, meta, submit_t, copy=0):
         now = self.sched.now
         verdict = self.guards[dst].admit(src, now)
         if verdict != "ok":
@@ -174,14 +177,15 @@ class Network:
                 self.log.emit(now, dst, "block", meta["height"], peer=src, until=until,
                               reason="inbound_rate")
                 self.sched.at(until, self._unblock, dst, src, meta["height"])
-            self._drop(dst, src, meta, "peer_blocked", submit_t, src, dst)
+            self._drop(dst, src, meta, "peer_blocked", src, dst)
             return
         self.stats["delivered"] += 1
-        if submit_t >= self.gst and src in self.correct and dst in self.correct:
-            latency = now - submit_t
+        if src in self.correct and dst in self.correct:
+            # Partial synchrony: tin gửi lúc t phải tới trước max(t, GST) + Delta.
+            latency = now - max(submit_t, self.gst)
             if latency > self.stats["max_latency_post_gst_correct"]:
                 self.stats["max_latency_post_gst_correct"] = latency
-        self._emit(dst, "deliver", meta, peer=src)
+        self._emit(dst, "deliver", meta, peer=src, copy=copy or None)
         self.handlers[dst](src, meta["mtype"], decode(raw))
 
     def _unblock(self, node, peer, height):

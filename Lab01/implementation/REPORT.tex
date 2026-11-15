@@ -45,7 +45,7 @@
 \code{src/consensus.py}, \code{node.py} & Quorum, chọn proposer, vote pool; node đúng (hai pha, lock, đồng bộ) \\
 \code{src/byzantine.py} & Node Byzantine dùng để tiêm lỗi \\
 \code{src/simulator.py}, \code{oracle.py}, \code{main.py} & Dựng scenario từ cấu hình; test oracle chỉ đọc log; CLI \\
-\code{tests/} & 72 unit test, end-to-end T1--T8 và X1--X3, quét seed, đột biến; \code{run_all.py} là entry point duy nhất \\
+\code{tests/} & 83 unit test, end-to-end T1--T8 và X1--X3, quét seed, đột biến; \code{run_all.py} là entry point duy nhất \\
 \code{config/}, \code{logs/} & Genesis và cấu hình từng scenario; log, summary, verdict thật của lần chạy \\
 \bottomrule
 \end{tabularx}
@@ -158,7 +158,8 @@ Thấy tin của height cao hơn thì sau 100 ms xin \code{COMMIT} của height 
 rồi mới lấy body và finalize.
 \item \textbf{Partial synchrony.} Trước GST mạng được mất, nhân đôi, trễ tùy cấu hình. Tin gửi lúc $t$
 luôn tới trước $\max(t, \mathrm{GST}) +$ cận đường truyền. Hàng chờ của giới hạn gửi cộng vào độ trễ,
-nên bộ test đo độ trễ thật sau GST giữa các node đúng và yêu cầu nó $\le \Delta$.
+nên với mọi tin giữa hai node đúng, bộ test đo thời gian từ $\max(t, \mathrm{GST})$ tới lúc nhận và
+yêu cầu nó $\le \Delta$; tin giữa hai node đúng bị mất sau GST cũng làm test trượt.
 \end{itemize}
 
 \subsection{Các bước consensus và locking (mục 6.1 của đề)}
@@ -205,19 +206,29 @@ quorum: nay có 38 sự kiện finalize trước GST và hai node bị cô lập
 không sinh xung đột. Thêm X3 (giấu commit): phe Byzantine cho riêng một node đủ \code{PRECOMMIT} để nó
 finalize $A$ một mình, rồi ở round sau cùng bỏ phiếu cho block khác. Với bản đúng, các node đã lock $A$
 prevote NIL và không có xung đột; bỏ luật lock thì xung đột ở 20/20 seed.
+\item \textbf{``State hash cuối'' phụ thuộc thời điểm dừng.} Mô phỏng dừng khi node đúng chậm nhất tới
+height mục tiêu, lúc đó node nhanh có thể đã finalize thêm một block (quét 30 seed: 5/30 lượt T7 dừng
+với height 12 và 13). Bản đầu lấy state mới nhất của từng node, nên chỉ trùng nhau vì block thừa
+tình cờ rỗng; nếu block đó có giao dịch thì T8 trượt dù hệ thống đúng. Sửa: state cuối là state tại
+height chung cao nhất mà mọi node đúng đã finalize, và state hash của từng node ở height đó phải trùng.
+\item \textbf{Log không ghi \code{send} cho tin bị mất.} Dòng \code{send} được ghi lúc truyền, nên tin
+bị phân vùng hay mất ngẫu nhiên chỉ có dòng \code{drop}; một body gửi sai luật rồi bị mất sẽ lọt qua
+phép kiểm ``body chỉ gửi sau yêu cầu''. Sửa: ghi \code{send} ngay khi node gửi, rồi mới tới
+\code{delay}, \code{drop}, \code{deliver}; thêm unit test cho chính oracle.
 \end{enumerate}
 
 \section{Kiểm thử và kết quả}
 Toàn bộ số liệu dưới đây lấy từ lần chạy thật \code{python -m tests.run_all} (seed và cấu hình trong
-\code{config/}, log trong \code{logs/}, bảng tổng hợp ở \code{logs/RESULTS.md}). Unit test: \textbf{72/72
+\code{config/}, log trong \code{logs/}, bảng tổng hợp ở \code{logs/RESULTS.md}). Unit test: \textbf{83/83
 đạt}, gồm chữ ký và domain, luật state, đếm phiếu, kiểm tra block, locking qua nhiều round, mạng, cô lập
-node. Mỗi scenario dùng 10 validator và phải đạt height mục tiêu trong thời gian mô phỏng giới hạn.
+node, và chính oracle (phải trượt trên log có vi phạm). Mỗi scenario dùng 10 validator và phải đạt height mục tiêu trong thời gian mô phỏng giới hạn.
 
 \textbf{Safety được kiểm trên mọi sự kiện finalize}, không chỉ state cuối: mỗi height chỉ có một
 (block hash, state hash) trong số các node đúng; lịch sử của từng node liên tục và nối đúng parent;
 mỗi lần finalize có ít nhất 7 người ký khác nhau; không node đúng nào ký hai phiếu cho cùng (height,
 round, phase) hay prevote trái với lock; không body nào rời node đúng trước yêu cầu của người nhận;
-không transaction nào xuất hiện hai lần. Sau GST, độ trễ lớn nhất giữa các node đúng đo được là 40 ms
+không transaction nào xuất hiện hai lần. Độ trễ lớn nhất giữa các node đúng, tính từ
+$\max(\textit{lúc gửi}, \mathrm{GST})$, đo được là 40 ms
 (45 ms ở T2, nơi cận đường truyền được cấu hình là 45 ms), đều trong $\Delta = 50$ ms, và không có
 tin nào giữa các node đúng bị mất; riêng X1 là 49 ms ($\Delta = 80$ ms) do tin phải xếp hàng.
 
@@ -239,7 +250,7 @@ T4 & Phát lại transaction & Áp dụng tối đa một lần & có & 44 lần
 T5 & Mất, trễ trước GST & Safety giữ & có & 551 tin mất, 763 tin trễ quá cận; 38 finalize trước GST; 18 \code{COMMIT} để bắt kịp; 10/10 height lúc 3992 ms \\
 T6 & Proposer im lặng, crash & Timeout đổi round, chain tiếp tục & có & 2 node dừng; 25 lần hết giờ propose; 25 lượt vào round $> 0$; 12/12 height \\
 T7 & 3 Byzantine equivocate & Không xung đột & có & 5 lần đề xuất hai block, 79 cặp phiếu xung đột, node đúng ghi nhận 248 equivocation; 12/12 height \\
-T8 & Chạy lại cùng seed & Log giống từng byte & có & 10/10 scenario giống từng byte và cùng state hash (1,1--1,9 MB mỗi log) \\ \midrule
+T8 & Chạy lại cùng seed & Log giống từng byte & có & 10/10 scenario giống từng byte và cùng state hash (1,1--1,8 MB mỗi log) \\ \midrule
 X1 & Giới hạn gửi, gửi dồn & Tin xếp hàng; chặn rồi mở & có & 183 tin xếp hàng; 3 lần chặn, 3 lần mở; 919 tin của node gửi dồn bị bỏ \\
 X2 & Proposer đề xuất block sai & Bác block, chain tiếp tục & có & 18 lượt bác vì lệch state hash, 9 lượt vì ghi khóa người khác; state không đổi \\
 X3 & Giấu commit phá lock & Không xung đột & có & 9 lần giấu commit; node bị bỏ lại bắt kịp bằng 18 \code{COMMIT} \\

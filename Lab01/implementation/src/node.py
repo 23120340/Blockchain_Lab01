@@ -584,7 +584,7 @@ class Node:
         txs, post = self.blocks[hash_]
         header = self.headers[hash_]
         entry = {"hash": hash_, "header": header, "txs": txs, "round": round_,
-                 "precommits": votes}
+                 "precommits": votes, "state": post}
         self.ledger.append(entry)
         self.by_hash[hash_] = entry
         self.state = post

@@ -1,5 +1,4 @@
 """Thành phần thuần của consensus: quorum, chọn proposer, vote pool."""
-from .models import NIL, PRECOMMIT, PREVOTE  # noqa: F401  (xuất lại cho tiện)
 
 
 def fault_bound(n) -> int:

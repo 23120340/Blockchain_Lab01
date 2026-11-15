@@ -155,6 +155,7 @@ python -m tests.check_determinism
   - *14/11:* `src/byzantine.py`; T2–T7 + X1–X3 đạt; quét 20 seed cho T5, T7, X3: 60/60 giữ safety và tới target; `test_locking.py` đạt.
 - [x] **G6 — Tái lập:** T8 chạy hai process; kiểm tra log giống từng byte, cùng state hash; chạy toàn bộ unit tests và T1–T8 từ một entry point.
   - *14/11:* `python -m tests.run_all` → TỔNG KẾT: PASS (72 unit test; T8 10/10 scenario giống từng byte; 2 đột biến đều bị oracle bắt). `python -m pytest tests` → 102 passed.
+  - *15/11 (rà soát lại):* state cuối lấy tại height chung (trước đó phụ thuộc thời điểm dừng); `send` ghi ngay khi gửi; cận Δ đo từ max(lúc gửi, GST); thêm `test_oracle.py`. Nay 83 unit test, `pytest tests` → 113 passed; quét 30 seed × 10 scenario: 0 vi phạm safety.
 - [x] **G7 — Tài liệu/kết quả:** README đủ cài/chạy/test; lưu config, log, summary và bảng kết quả thực tế; soạn báo cáo và xuất PDF tối đa 10 trang.
   - *14/11:* `README.md`, `logs/RESULTS.md`, `REPORT.pdf` 5 trang. Nguồn báo cáo là **`REPORT.tex`** (không phải `.md`, vì máy không có pandoc); biên dịch bằng `xelatex REPORT.tex` hai lần. **Còn thiếu:** bảng thông tin nhóm trong báo cáo đang là placeholder màu đỏ.
 - [ ] **G8 — Bộ bài nộp:** đặt đúng tên folder/ZIP, đủ file, loại dependencies/cache; giải nén vào thư mục kiểm tra riêng và chạy lại theo README.

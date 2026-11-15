@@ -41,7 +41,7 @@ ghi ba file vào thư mục `--output`:
 | File | Nội dung |
 |---|---|
 | `events.log` | Mỗi dòng một sự kiện JSON: `t` (ms mô phỏng), `node`, `type`, `height`, thêm `round`, `hash`, `reason`, `peer`… |
-| `summary.json` | Height, tip, state hash của từng node; state cuối; thống kê mạng; `sha256` của log |
+| `summary.json` | Height, tip, state hash của từng node; state cuối (`final_state`, `final_state_hash`) lấy tại height chung cao nhất mà mọi node đúng đã finalize; thống kê mạng; `sha256` của log |
 | `verdict.json` | Kết quả từng phép kiểm của oracle và số lần xuất hiện mỗi loại sự kiện |
 
 Tùy chọn `--seed N` ghi đè seed trong cấu hình. Sinh lại genesis: `python -m src.genesis`.
@@ -56,7 +56,8 @@ Một entry point cho tất cả:
 
 Lệnh này lần lượt chạy (khoảng 1–2 phút):
 
-1. 72 unit test (`tests/unit`): chữ ký/domain, luật state, đếm phiếu, kiểm tra block, locking, mạng.
+1. 83 unit test (`tests/unit`): chữ ký/domain, luật state, đếm phiếu, kiểm tra block, locking, mạng,
+   và chính oracle (phải trượt khi log có vi phạm).
 2. End-to-end T1–T7 và ba kịch bản bổ sung X1–X3; ghi log vào `logs/<scenario>/`.
 3. Quét 20 seed cho T5, T7, X3 (safety phải đúng với mọi lịch mạng).
 4. T8: mỗi scenario chạy hai lần ở hai process riêng, so **bytes** của `events.log` và state hash.
@@ -68,8 +69,8 @@ Các lệnh riêng lẻ:
 
 ```powershell
 .\.venv\Scripts\python.exe -m tests.check_determinism                       # chỉ T8, mọi scenario
-.\.venv\Scripts\python.exe -m tests.check_determinism t5_drop_delay_before_gst
-.\.venv\Scripts\python.exe -m pytest tests -q                               # 102 test qua pytest
+.\.venv\Scripts\python.exe -m tests.check_determinism t5_drop_delay_before_gst   # chỉ một scenario
+.\.venv\Scripts\python.exe -m pytest tests -q                               # 113 test qua pytest
 .\.venv\Scripts\python.exe -m pytest tests/unit -q                          # chỉ unit test
 ```
 

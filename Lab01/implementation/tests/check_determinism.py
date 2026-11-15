@@ -54,19 +54,23 @@ KEEP = ("t5_drop_delay_before_gst", "t7_byzantine_equivocation")
 def run(names=None, work_dir=None, keep=KEEP):
     """So sánh mọi scenario; chỉ giữ lại hai bộ log run1/run2 của các scenario trong
     `keep` làm bằng chứng (các scenario khác đã có log ở logs/<scenario>/)."""
+    full = not names
     names = names or [s[1] for s in SCENARIOS]
     work_dir = work_dir or os.path.join(LOG_DIR, "t8_determinism")
-    shutil.rmtree(work_dir, ignore_errors=True)
     results = []
     for name in names:
+        # Chỉ dọn thư mục của scenario đang so; bằng chứng của scenario khác giữ nguyên.
+        shutil.rmtree(os.path.join(work_dir, name), ignore_errors=True)
         results.append(compare_two_processes(name, work_dir))
         if name not in keep:
             shutil.rmtree(os.path.join(work_dir, name), ignore_errors=True)
     ok = all(r["identical_log_bytes"] and r["identical_summary_bytes"]
              and r["identical_state_hash"] for r in results)
-    with open(os.path.join(work_dir, "result.json"), "wb") as fh:
-        fh.write(json.dumps({"pass": ok, "runs": results}, indent=2, sort_keys=True)
-                 .encode("utf-8") + b"\n")
+    if full:
+        # result.json là kết quả của lần so TOÀN BỘ scenario; lần chạy lẻ không ghi đè.
+        with open(os.path.join(work_dir, "result.json"), "wb") as fh:
+            fh.write(json.dumps({"pass": ok, "runs": results}, indent=2, sort_keys=True)
+                     .encode("utf-8") + b"\n")
     return ok, results
 
 

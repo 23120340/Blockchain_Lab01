@@ -67,13 +67,14 @@ def test_drop_duplicate_and_partition_before_gst():
     sched, log, net, inbox = make_net(cfg)
     net.send("a", "b", "VOTE", {}, height=1)
     sched.run(100)
-    assert inbox["b"] == [] and types(log) == ["drop"]
+    assert inbox["b"] == [] and types(log) == ["send", "drop"]   # tin mất vẫn có dòng send
 
     cfg = {"post_gst": {"delay_min": 1, "delay_max": 5, "dup_permille": 1000}}
     sched, log, net, inbox = make_net(cfg)
     net.send("a", "b", "VOTE", {}, height=1)
     sched.run(100)
-    assert len(inbox["b"]) == 2 and "duplicate" in types(log)
+    assert len(inbox["b"]) == 2 and types(log).count("send") == 1
+    assert types(log).count("duplicate") == 1 and types(log).count("deliver") == 2
 
     cfg = {"partitions": [{"from": 0, "to": 50, "groups": [["a"], ["b", "c"]]}]}
     sched, log, net, inbox = make_net(cfg)
@@ -82,7 +83,8 @@ def test_drop_duplicate_and_partition_before_gst():
     sched.at(60, net.send, "a", "b", "VOTE", {}, 1)
     sched.run(200)
     assert len(inbox["c"]) == 1 and len(inbox["b"]) == 1 and inbox["b"][0][0] >= 60
-    assert json.loads(log.lines[0])["reason"] == "partition"
+    first_drop = next(json.loads(x) for x in log.lines if json.loads(x)["type"] == "drop")
+    assert first_drop["reason"] == "partition" and first_drop["peer"] == "b"
 
 
 def test_message_sent_before_gst_arrives_by_gst_plus_bound():
@@ -94,6 +96,29 @@ def test_message_sent_before_gst_arrives_by_gst_plus_bound():
     sched.run(20000)
     assert inbox["b"][0][0] == 140
     assert "delay" in types(log)
+    # Độ trễ partial synchrony được đo từ max(lúc gửi, GST): 140 - 100 = 40 <= Delta.
+    assert net.stats["max_latency_post_gst_correct"] == 40
+
+
+def test_rate_limited_message_counts_toward_delta_bound():
+    """Tin xếp hàng vì giới hạn gửi vẫn phải nằm trong cận: thời gian chờ cộng vào độ trễ."""
+    cfg = {"outbound": {"window_ms": 100, "max_msgs": 1},
+           "post_gst": {"delay_min": 5, "delay_max": 5}}
+    sched, log, net, inbox = make_net(cfg)
+    net.send("a", "b", "VOTE", {}, height=1)
+    net.send("a", "b", "VOTE", {}, height=1)          # phải chờ cửa sổ sau
+    sched.run(1000)
+    assert [t for t, *_ in inbox["b"]] == [5, 105]
+    assert net.stats["max_latency_post_gst_correct"] == 105   # oracle sẽ báo vượt Delta
+
+
+def test_drop_after_gst_between_correct_nodes_is_counted():
+    cfg = {"post_gst": {"delay_min": 1, "delay_max": 1, "drop_permille": 1000}}
+    sched, log, net, inbox = make_net(cfg, correct=["a", "b"])
+    net.send("a", "b", "VOTE", {}, height=1)          # giữa hai node đúng: vi phạm
+    net.send("c", "b", "VOTE", {}, height=1)          # từ node lỗi: không tính
+    sched.run(100)
+    assert net.stats["post_gst_correct_drops"] == 1
 
 
 def test_rate_limit_delays_and_logs_but_never_drops():
@@ -185,6 +210,27 @@ def test_nodes_do_not_share_mutable_state():
     a.ledger[0]["header"]["state_hash"] = "corrupted"
     assert b.state.data["alice/message"] == "hello"
     assert b.ledger[0]["header"]["state_hash"] != "corrupted"
+
+
+def test_final_state_is_taken_at_common_height():
+    """Node nhanh đã finalize thêm block: state cuối vẫn lấy ở height mọi node đúng đều có."""
+    sim = Simulation(dict(SMALL))
+    sim.run()
+    before = sim.summary()
+    common = before["min_correct_height"]
+    fast = sim.nodes["v0"]
+    extra = dict(fast.ledger[-1])
+    ahead = fast.state.copy()
+    ahead.data["alice/extra"] = "x"
+    extra["state"] = ahead
+    fast.ledger.append(extra)                          # v0 giả như đi trước một block
+    fast.state = ahead
+    after = sim.summary()
+    assert after["min_correct_height"] == common
+    assert after["final_state_hash"] == before["final_state_hash"] is not None
+    assert after["final_state"]["height"] == common
+    assert "alice/extra" not in after["final_state"]["data"]
+    assert after["nodes"]["v0"]["state_hash"] != after["final_state_hash"]
 
 
 def test_simulation_is_reproducible_in_process():

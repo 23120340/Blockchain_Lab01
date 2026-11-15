@@ -1,6 +1,6 @@
 # Kết quả kiểm thử (sinh tự động bởi `python -m tests.run_all`)
 
-- Unit tests: **PASS** — `72 passed in 0.40s`
+- Unit tests: **PASS** — `83 passed in 0.54s`
 
 | Test | Kịch bản | Kết quả bắt buộc | Kết quả | Height | Thời gian mô phỏng | Bằng chứng trong log |
 |---|---|---|---|---|---|---|
@@ -28,16 +28,16 @@
 
 | Scenario | Bytes log | sha256(log) lần 1 = lần 2 | State hash cuối |
 |---|---|---|---|
-| t1_normal | 1248114 | giống (`87f50a2addc3999f…`) | `2451cf1761f390d3…` |
-| t2_duplicate_reorder | 1807888 | giống (`4e0e6f89c047a503…`) | `4c98559b4eee4ead…` |
-| t3_invalid_signature_domain | 1137090 | giống (`c4a8b3ce93eff31b…`) | `436bc271db28bbf2…` |
-| t4_replay_transaction | 1893323 | giống (`58e208df765e1ff4…`) | `1f1805a8c0403be6…` |
-| t5_drop_delay_before_gst | 1379790 | giống (`87634ee99794294a…`) | `4c98559b4eee4ead…` |
-| t6_silent_proposer | 1118893 | giống (`28f55cd9a6c4359b…`) | `4c98559b4eee4ead…` |
-| t7_byzantine_equivocation | 1587922 | giống (`8f6ee63056b20414…`) | `4c98559b4eee4ead…` |
-| x1_rate_limit_block | 1586293 | giống (`ecda69db3e243081…`) | `a890275cc335b326…` |
-| x2_invalid_block_proposer | 1350959 | giống (`532dde4f7f2c2c8f…`) | `a890275cc335b326…` |
-| x3_withheld_commit | 1141830 | giống (`659f8a67906875e1…`) | `a890275cc335b326…` |
+| t1_normal | 1215785 | giống (`e9584d0fb6776b6e…`) | `2451cf1761f390d3…` |
+| t2_duplicate_reorder | 1629398 | giống (`bc474654d57bab82…`) | `4c98559b4eee4ead…` |
+| t3_invalid_signature_domain | 1105617 | giống (`26a1bf3dac7ad0c8…`) | `436bc271db28bbf2…` |
+| t4_replay_transaction | 1837377 | giống (`d131c679a8965a33…`) | `1f1805a8c0403be6…` |
+| t5_drop_delay_before_gst | 1410293 | giống (`5864d28edabc2fc0…`) | `4c98559b4eee4ead…` |
+| t6_silent_proposer | 1087213 | giống (`777af02f54e769cf…`) | `4c98559b4eee4ead…` |
+| t7_byzantine_equivocation | 1545703 | giống (`b49298d00243404f…`) | `4c98559b4eee4ead…` |
+| x1_rate_limit_block | 1539615 | giống (`86974c94115fca9a…`) | `a890275cc335b326…` |
+| x2_invalid_block_proposer | 1313942 | giống (`01619be168762b3d…`) | `a890275cc335b326…` |
+| x3_withheld_commit | 1111368 | giống (`9af77077c7c7bcfd…`) | `a890275cc335b326…` |
 
 ## Độ nhạy của bộ test (cố tình làm hỏng node đúng)
 

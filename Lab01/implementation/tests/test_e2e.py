@@ -1,4 +1,4 @@
-"""End-to-end T1-T8 (và X1, X2) chạy qua pytest: python -m pytest tests"""
+"""End-to-end T1-T8 (và X1-X3) chạy qua pytest: python -m pytest tests"""
 import pytest
 
 from tests.check_determinism import compare_two_processes

@@ -14,7 +14,7 @@ phe tấn công). Node đúng không bao giờ thấy đối tượng này.
 """
 from .crypto import fixture_keypair, hash_obj, sign
 from .models import (NIL, PRECOMMIT, PREVOTE, block_hash, make_header, make_proposal, make_tx, make_vote,
-                     tx_domain, vote_domain, VOTE_FIELDS, payload)
+                     tx_domain, VOTE_FIELDS, payload)
 from .node import Node
 
 
