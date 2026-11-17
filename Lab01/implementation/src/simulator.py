@@ -21,6 +21,16 @@ class ConfigError(Exception):
     pass
 
 
+def check_account_name(name):
+    """Luật sở hữu dùng tiền tố "<sender>/", nên tên tài khoản không được rỗng hay chứa "/".
+
+    Nếu có cả "alice" và "alice/bob" thì khóa "alice/bob/x" thuộc về cả hai, và alice
+    ghi đè được dữ liệu của alice/bob.
+    """
+    if not isinstance(name, str) or not name or "/" in name:
+        raise ConfigError(f"tên tài khoản không hợp lệ (rỗng hoặc chứa '/'): {name!r}")
+
+
 def build_genesis(chain_id, n_validators, account_names):
     """Genesis tái lập được: khóa công khai suy từ key fixture theo tên."""
     if n_validators < 8 or n_validators % 3 != 1:
@@ -30,6 +40,7 @@ def build_genesis(chain_id, n_validators, account_names):
                   for i in range(n_validators)}
     accounts = dict(validators)
     for name in account_names:
+        check_account_name(name)
         accounts[name] = fixture_keypair(chain_id, name).pub_hex
     return {"chain_id": chain_id, "validators": validators, "accounts": accounts}
 
@@ -53,6 +64,7 @@ def _genesis_of(cfg):
     if n < 8 or n % 3 != 1:
         raise ConfigError(f"số validator phải có dạng 3f+1 và >= 8, nhận {n}")
     for name, pub in genesis["accounts"].items():
+        check_account_name(name)
         if fixture_keypair(genesis["chain_id"], name).pub_hex != pub:
             raise ConfigError(f"khóa công khai của {name} không khớp key fixture")
     return genesis

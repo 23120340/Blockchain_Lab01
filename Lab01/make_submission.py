@@ -3,8 +3,9 @@
     python make_submission.py 23120001 23120002 ...     # một MSSV cho mỗi thành viên
     python make_submission.py --draft                   # bản nháp để thử quy trình
 
-Tạo  submission/Lab01_<MSSV...>/  và  submission/Lab01_<MSSV...>.zip  chứa đúng:
-    src/  tests/  logs/  config/  README.md  REPORT.pdf  requirements.txt
+Tạo  submission/Lab01_<MSSV...>/  và  submission/Lab01_<MSSV...>.zip  chứa đúng sáu mục đề yêu cầu:
+    src/  tests/  logs/  config/  README.md  REPORT.pdf
+MSSV được sắp tăng dần trong tên thư mục.
 ZIP có một thư mục gốc duy nhất. Không đưa .venv, __pycache__, file tạm hay nguồn báo cáo.
 """
 import os
@@ -16,7 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 IMPL = os.path.join(HERE, "implementation")
 OUT = os.path.join(HERE, "submission")
 DIRS = ["src", "tests", "logs", "config"]
-FILES = ["README.md", "REPORT.pdf", "requirements.txt"]
+FILES = ["README.md", "REPORT.pdf"]
 SKIP_DIRS = {"__pycache__", ".pytest_cache", ".venv"}
 
 
@@ -28,7 +29,7 @@ def main():
     else:
         if not args or not all(a.isdigit() for a in args):
             sys.exit("Cần danh sách MSSV (chỉ gồm chữ số), ví dụ: python make_submission.py 23120001 23120002")
-        name = "Lab01_" + "_".join(args)
+        name = "Lab01_" + "_".join(sorted(args))
         with open(os.path.join(IMPL, "REPORT.tex"), encoding="utf-8") as fh:
             if "[MSSV 1]" in fh.read():
                 sys.exit("REPORT.tex còn placeholder thông tin nhóm. Điền, biên dịch lại REPORT.pdf rồi chạy lại.")

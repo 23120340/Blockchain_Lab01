@@ -1,0 +1,92 @@
+[
+  {
+    "n": 10,
+    "f": 3,
+    "quorum": 7,
+    "pass": true,
+    "failed_checks": [],
+    "sends_total": 2975,
+    "sends_by_type": {
+      "BODY": 108,
+      "BODY_REQUEST": 113,
+      "PROPOSAL": 117,
+      "TX": 468,
+      "VOTE": 2169
+    },
+    "votes_per_height": 180.8,
+    "votes_per_height_theory": 180,
+    "ms_per_height": 121.5
+  },
+  {
+    "n": 13,
+    "f": 4,
+    "quorum": 9,
+    "pass": true,
+    "failed_checks": [],
+    "sends_total": 4824,
+    "sends_by_type": {
+      "BODY": 144,
+      "BODY_REQUEST": 144,
+      "PROPOSAL": 156,
+      "TX": 624,
+      "VOTE": 3756
+    },
+    "votes_per_height": 313.0,
+    "votes_per_height_theory": 312,
+    "ms_per_height": 121.9
+  },
+  {
+    "n": 16,
+    "f": 5,
+    "quorum": 11,
+    "pass": true,
+    "failed_checks": [],
+    "sends_total": 7110,
+    "sends_by_type": {
+      "BODY": 180,
+      "BODY_REQUEST": 180,
+      "PROPOSAL": 195,
+      "TX": 780,
+      "VOTE": 5775
+    },
+    "votes_per_height": 481.2,
+    "votes_per_height_theory": 480,
+    "ms_per_height": 127.2
+  },
+  {
+    "n": 19,
+    "f": 6,
+    "quorum": 13,
+    "pass": true,
+    "failed_checks": [],
+    "sends_total": 9832,
+    "sends_by_type": {
+      "BODY": 216,
+      "BODY_REQUEST": 220,
+      "PROPOSAL": 234,
+      "TX": 936,
+      "VOTE": 8226
+    },
+    "votes_per_height": 685.5,
+    "votes_per_height_theory": 684,
+    "ms_per_height": 126.7
+  },
+  {
+    "n": 22,
+    "f": 7,
+    "quorum": 15,
+    "pass": true,
+    "failed_checks": [],
+    "sends_total": 12978,
+    "sends_by_type": {
+      "BODY": 252,
+      "BODY_REQUEST": 252,
+      "PROPOSAL": 273,
+      "TX": 1092,
+      "VOTE": 11109
+    },
+    "votes_per_height": 925.8,
+    "votes_per_height_theory": 924,
+    "ms_per_height": 124.9
+  }
+]

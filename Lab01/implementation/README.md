@@ -14,8 +14,7 @@ Chạy lại cùng cấu hình cho log giống từng byte và cùng state hash 
 | pytest | 9.2.0 |
 | Hệ điều hành | Windows 11 |
 
-Không có bước build. Ngoài sáu mục đề yêu cầu, bài nộp có thêm `requirements.txt` để cài lại
-đúng hai thư viện trên.
+Không có bước build.
 
 ## 2. Cài đặt
 
@@ -23,10 +22,10 @@ Không có bước build. Ngoài sáu mục đề yêu cầu, bài nộp có th�
 
 ```powershell
 py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install cryptography==50.0.2 pytest==9.2.0
 ```
 
-Linux/macOS: `python3 -m venv .venv && .venv/bin/python -m pip install -r requirements.txt`,
+Linux/macOS: `python3 -m venv .venv && .venv/bin/python -m pip install cryptography==50.0.2 pytest==9.2.0`,
 rồi thay `.\.venv\Scripts\python.exe` bằng `.venv/bin/python` trong các lệnh dưới.
 
 ## 3. Chạy simulator
@@ -56,7 +55,7 @@ Một entry point cho tất cả:
 
 Lệnh này lần lượt chạy (khoảng 1–2 phút):
 
-1. 83 unit test (`tests/unit`): chữ ký/domain, luật state, đếm phiếu, kiểm tra block, locking, mạng,
+1. 84 unit test (`tests/unit`): chữ ký/domain, luật state, đếm phiếu, kiểm tra block, locking, mạng,
    và chính oracle (phải trượt khi log có vi phạm).
 2. End-to-end T1–T7 và ba kịch bản bổ sung X1–X3; ghi log vào `logs/<scenario>/`.
 3. Quét 20 seed cho T5, T7, X3 (safety phải đúng với mọi lịch mạng).
@@ -70,9 +69,13 @@ Các lệnh riêng lẻ:
 ```powershell
 .\.venv\Scripts\python.exe -m tests.check_determinism                       # chỉ T8, mọi scenario
 .\.venv\Scripts\python.exe -m tests.check_determinism t5_drop_delay_before_gst   # chỉ một scenario
-.\.venv\Scripts\python.exe -m pytest tests -q                               # 113 test qua pytest
+.\.venv\Scripts\python.exe -m pytest tests -q                               # 114 test qua pytest
 .\.venv\Scripts\python.exe -m pytest tests/unit -q                          # chỉ unit test
+.\.venv\Scripts\python.exe -m tests.experiment_scaling                      # thí nghiệm n = 10…22 validator
 ```
+
+`tests.experiment_scaling` không thuộc bộ test bắt buộc: nó chạy lại T1 với 10, 13, 16, 19, 22
+validator, kiểm bằng oracle và ghi số thông điệp, thời gian mỗi height vào `logs/experiment_scaling.json`.
 
 ## 5. Các scenario
 

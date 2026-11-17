@@ -92,3 +92,16 @@ def test_invalid_block_never_touches_committed_state():
     assert committed.hash() == before and committed.data == {"alice/k": "old"}
     result = execute_block(committed, txs[:1], ACCOUNTS, CHAIN)
     assert committed.data == {"alice/k": "old"} and result.data == {"alice/k": "new"}
+
+
+def test_account_name_with_slash_is_rejected():
+    """Có cả "alice" và "alice/bob" thì alice ghi được khóa "alice/bob/..." của người kia."""
+    from src.simulator import ConfigError, Simulation, build_genesis
+    for bad in (["alice", "alice/bob"], [""]):
+        with pytest.raises(ConfigError):
+            build_genesis(CHAIN, 10, bad)
+    genesis = build_genesis(CHAIN, 10, ["alice"])
+    genesis["accounts"]["alice/bob"] = fixture_keypair(CHAIN, "alice/bob").pub_hex
+    with pytest.raises(ConfigError):                     # genesis nạp từ file cũng bị kiểm
+        Simulation({"name": "unit", "seed": 1, "target_height": 1, "max_time": 100,
+                    "genesis": genesis})

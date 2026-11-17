@@ -1,0 +1,28 @@
+\contentsline {section}{\numberline {1}THÔNG TIN NHÓM VÀ PHÂN CÔNG CÔNG VIỆC}{1}{section.1}%
+\contentsline {section}{\numberline {2}CẤU TRÚC DỰ ÁN}{1}{section.2}%
+\contentsline {section}{\numberline {3}TỔNG QUAN HỆ THỐNG}{1}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Bối cảnh: blockchain Layer 1 và bài toán đồng thuận}{1}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Mục đích và phạm vi}{2}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Các lựa chọn thiết kế và phương án thay thế}{2}{subsection.3.3}%
+\contentsline {section}{\numberline {4}THIẾT KẾ HỆ THỐNG}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Mô hình hệ thống và giả định}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Module và tương tác}{4}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Cấu trúc dữ liệu chính}{4}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Luồng xử lý một block}{4}{subsection.4.4}%
+\contentsline {section}{\numberline {5}GHI CHÚ TRIỂN KHAI}{5}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Mật mã, thực thi giao dịch và các guard}{5}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Mạng mô phỏng, chiến lược truyền tin và tính tái lập}{5}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Các bước consensus và locking (mục 6.1 của đề)}{7}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Lập luận an toàn, tiến triển và độ phức tạp}{7}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Lỗi thực tế đã gặp và cách sửa}{8}{subsection.5.5}%
+\contentsline {section}{\numberline {6}KIỂM THỬ VÀ KẾT QUẢ}{9}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Chiến lược kiểm thử}{9}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Kết quả từng kịch bản}{10}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Quét seed và độ nhạy của bộ test}{10}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Thí nghiệm tăng số validator}{11}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Bất thường quan sát được}{11}{subsection.6.5}%
+\contentsline {section}{\numberline {7}ĐÁNH GIÁ VÀ HƯỚNG PHÁT TRIỂN}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}So sánh với các hệ thống thực tế}{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Hạn chế hiện tại}{12}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Hướng phát triển}{12}{subsection.7.3}%
+\contentsline {section}{TÀI LIỆU THAM KHẢO}{12}{subsection.7.3}%
